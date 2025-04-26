@@ -1,5 +1,7 @@
 #include "../include/Lexer.h"
 
+#include <iostream>
+
 namespace tiny_compiler {
 
 // 初始化关键字表
@@ -45,12 +47,10 @@ Token Lexer::nextToken() {
             return makeToken(TokenType::MINUS);
         case '*':
             return makeToken(TokenType::MULTIPLY);
-        case '/':
-            return makeToken(TokenType::DIVIDE);
         case '%':
             return makeToken(TokenType::MOD);
 
-        // 可能是双字符token
+        // 可能是双字符的token
         case '!':
             return makeToken(match('=') ? TokenType::NEQ : TokenType::NOT);
         case '=':
@@ -65,9 +65,63 @@ Token Lexer::nextToken() {
         case '|':
             if (match('|')) return makeToken(TokenType::OR);
             break;
+        case '/':
+            if (match('/')) {
+                // 单行注释
+                while (peek() != '\n' && !isAtEnd()) advance();
+                return nextToken();
+            } else if (match('*')) {
+                // 多行注释
+                while (!isAtEnd() && !(peek() == '*' && peekNext() == '/')) {
+                    if (peek() == '\n') line_++;
+                    advance();
+                }
+                if (!isAtEnd()) {
+                    advance();  // 跳过 '*'
+                    advance();  // 跳过 '/'
+                }
+                return nextToken();
+            }
+            return makeToken(TokenType::DIVIDE);
     }
 
     return errorToken("Unexpected character.");
+}
+
+Token Lexer::identifier() {
+    while (isAlphaNumeric(peek())) advance();
+
+    std::string text = source_.substr(start_, current_ - start_);
+    auto it = keywords_.find(text);
+    TokenType type = it != keywords_.end() ? it->second : TokenType::IDENTIFIER;
+
+    if (type == TokenType::IDENTIFIER) {
+        std::string symbolType;
+        if (!SymbolTable::lookupSymbol(text, symbolType)) {
+            SymbolTable::addSymbol(text, "IDENTIFIER");
+        }
+    }
+
+    return makeToken(type);
+}
+
+Token Lexer::number() {
+    bool isFloat = false;
+
+    while (isDigit(peek())) advance();
+
+    // 处理小数点
+    if (peek() == '.' && isDigit(peekNext())) {
+        isFloat = true;
+        advance();  // 跳过小数点
+
+        while (isDigit(peek())) advance();
+    }
+
+    std::string numStr = source_.substr(start_, current_ - start_);
+    SymbolTable::addSymbol(numStr, isFloat ? "FLOAT_CONST" : "INT_CONST");
+
+    return makeToken(isFloat ? TokenType::FLOAT_CONST : TokenType::INT_CONST);
 }
 
 Token Lexer::peekToken() {
@@ -131,56 +185,10 @@ void Lexer::skipWhitespace() {
                 line_++;
                 advance();
                 break;
-            case '/':
-                if (peekNext() == '/') {
-                    // 单行注释
-                    while (peek() != '\n' && !isAtEnd()) advance();
-                } else if (peekNext() == '*') {
-                    // 多行注释
-                    advance();  // 跳过 '/'
-                    advance();  // 跳过 '*'
-                    while (!isAtEnd() &&
-                           !(peek() == '*' && peekNext() == '/')) {
-                        if (peek() == '\n') line_++;
-                        advance();
-                    }
-                    if (!isAtEnd()) {
-                        advance();  // 跳过 '*'
-                        advance();  // 跳过 '/'
-                    }
-                } else {
-                    return;
-                }
-                break;
             default:
                 return;
         }
     }
-}
-
-Token Lexer::identifier() {
-    while (isAlphaNumeric(peek())) advance();
-
-    std::string text = source_.substr(start_, current_ - start_);
-    auto it = keywords_.find(text);
-    TokenType type = it != keywords_.end() ? it->second : TokenType::IDENTIFIER;
-
-    return makeToken(type);
-}
-
-Token Lexer::number() {
-    bool isFloat = false;
-
-    while (isDigit(peek())) advance();
-
-    // 处理小数点
-    if (peek() == '.' && isDigit(peekNext())) {
-        isFloat = true;
-        advance();  // 跳过小数点
-        while (isDigit(peek())) advance();
-    }
-
-    return makeToken(isFloat ? TokenType::FLOAT_CONST : TokenType::INT_CONST);
 }
 
 Token Lexer::makeToken(TokenType type) const {
@@ -188,7 +196,8 @@ Token Lexer::makeToken(TokenType type) const {
     return Token(type, text, line_);
 }
 
-Token Lexer::errorToken(const std::string& message) const {
+Token Lexer::errorToken(const std::string& message) {
+    errorMessage_ = message + " at line " + std::to_string(line_);
     return Token(TokenType::ERROR, message, line_);
 }
 

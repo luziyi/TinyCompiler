@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <unordered_map>
 
 namespace tiny_compiler {
 
@@ -67,10 +68,27 @@ class Token {
     // 将token转换为字符串（用于调试）
     std::string toString() const;
 
+    // 符号表相关
+    bool isKeyword() const;
+    bool isIdentifier() const;
+    bool isOperator() const;
+    bool isDelimiter() const;
+
    private:
     TokenType type_;      // token类型
     std::string lexeme_;  // token的词素
     int line_;            // token所在行号
+};
+
+// 添加符号表类
+class SymbolTable {
+   public:
+    static bool addSymbol(const std::string& name, const std::string& type);
+    static bool lookupSymbol(const std::string& name, std::string& type);
+    static void clear();
+
+   private:
+    static std::unordered_map<std::string, std::string> symbols_;
 };
 
 }  // namespace tiny_compiler

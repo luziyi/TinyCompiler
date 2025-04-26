@@ -21,6 +21,10 @@ class Lexer {
     // 获取所有token
     std::vector<Token> getAllTokens();
 
+    // 错误处理
+    bool hasError() const { return !errorMessage_.empty(); }
+    const std::string& getErrorMessage() const { return errorMessage_; }
+
    private:
     // 辅助函数
     bool isAtEnd() const;
@@ -30,7 +34,7 @@ class Lexer {
     bool match(char expected);
     void skipWhitespace();
     Token makeToken(TokenType type) const;
-    Token errorToken(const std::string& message) const;
+    Token errorToken(const std::string& message);
 
     // 处理各种token的函数
     Token identifier();
@@ -47,6 +51,7 @@ class Lexer {
     size_t start_ = 0;
     size_t current_ = 0;
     int line_ = 1;
+    std::string errorMessage_;
 
     // 关键字表
     static const std::unordered_map<std::string, TokenType> keywords_;

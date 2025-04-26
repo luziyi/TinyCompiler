@@ -2,6 +2,9 @@
 
 namespace tiny_compiler {
 
+// 初始化静态成员
+std::unordered_map<std::string, std::string> SymbolTable::symbols_;
+
 Token::Token(TokenType type, const std::string& lexeme, int line)
     : type_(type), lexeme_(lexeme), line_(line) {}
 
@@ -10,6 +13,60 @@ TokenType Token::getType() const { return type_; }
 const std::string& Token::getLexeme() const { return lexeme_; }
 
 int Token::getLine() const { return line_; }
+
+bool Token::isKeyword() const {
+    switch (type_) {
+        case TokenType::CONST:
+        case TokenType::INT:
+        case TokenType::FLOAT:
+        case TokenType::VOID:
+        case TokenType::IF:
+        case TokenType::ELSE:
+        case TokenType::RETURN:
+            return true;
+        default:
+            return false;
+    }
+}
+
+bool Token::isIdentifier() const { return type_ == TokenType::IDENTIFIER; }
+
+bool Token::isOperator() const {
+    switch (type_) {
+        case TokenType::PLUS:
+        case TokenType::MINUS:
+        case TokenType::MULTIPLY:
+        case TokenType::DIVIDE:
+        case TokenType::MOD:
+        case TokenType::ASSIGN:
+        case TokenType::EQ:
+        case TokenType::NEQ:
+        case TokenType::LT:
+        case TokenType::GT:
+        case TokenType::LE:
+        case TokenType::GE:
+        case TokenType::AND:
+        case TokenType::OR:
+        case TokenType::NOT:
+            return true;
+        default:
+            return false;
+    }
+}
+
+bool Token::isDelimiter() const {
+    switch (type_) {
+        case TokenType::LPAREN:
+        case TokenType::RPAREN:
+        case TokenType::LBRACE:
+        case TokenType::RBRACE:
+        case TokenType::SEMICOLON:
+        case TokenType::COMMA:
+            return true;
+        default:
+            return false;
+    }
+}
 
 std::string Token::toString() const {
     std::string typeStr;
@@ -114,8 +171,27 @@ std::string Token::toString() const {
             typeStr = "ERROR";
             break;
     }
-    return "Token{type=" + typeStr + ", lexeme='" + lexeme_ +
-           "', line=" + std::to_string(line_) + "}";
+    return "<" + typeStr + "," + lexeme_ + ">";
 }
+
+// 符号表方法实现
+bool SymbolTable::addSymbol(const std::string& name, const std::string& type) {
+    if (symbols_.find(name) != symbols_.end()) {
+        return false;  // 符号已存在
+    }
+    symbols_[name] = type;
+    return true;
+}
+
+bool SymbolTable::lookupSymbol(const std::string& name, std::string& type) {
+    auto it = symbols_.find(name);
+    if (it != symbols_.end()) {
+        type = it->second;
+        return true;
+    }
+    return false;
+}
+
+void SymbolTable::clear() { symbols_.clear(); }
 
 }  // namespace tiny_compiler
