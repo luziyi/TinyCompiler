@@ -1,16 +1,19 @@
-#include "util.h"
+#include "../include/util.h"
+
+// 定义词法分析输出文件路径
+const char lexicalTxtPath[] = "./result/lexical.txt";
 
 void test() { std::cout << "test" << std::endl; }
 
-string toLower(string str) {
-    string result = str;
+std::string toLower(std::string str) {
+    std::string result = str;
     for (unsigned int i = 0; i < str.length(); i++) {
         result[i] = tolower(str[i]);
     }
     return result;
 }
 
-bool isAllLetter(string str) {
+bool isAllLetter(std::string str) {
     for (unsigned int i = 0; i < str.length(); i++) {
         if (!isalpha(str[i])) {
             return false;
@@ -19,9 +22,9 @@ bool isAllLetter(string str) {
     return true;
 }
 
-void printToken(string token, int code, int lineNum) {
+void printToken(std::string token, int code, int lineNum) {
     FILE *fp = freopen(lexicalTxtPath, "a", stdout);
-    string result = "";
+    std::string result = "";
     result += token;
     result += '\t';
     result += "<";
@@ -71,23 +74,24 @@ void printToken(string token, int code, int lineNum) {
             break;
     }
     if (code != TokenCode::IDN && code != TokenCode::INT) {
-        result += "," + to_string(code) + ">";
+        result += "," + std::to_string(code) + ">";
     } else {
         result += "," + token + ">";
     }
-    cout << result << endl;
+    std::cout << result << std::endl;
     fflush(fp);
     fclose(fp);
     freopen("CON", "w", stdout);
     if (code == TokenCode::UNDIFNIE) {
-        cout << "UNDIFNIED token: " << token << " in line " << lineNum << endl;
+        std::cout << "UNDIFNIED token: " << token << " in line " << lineNum
+                  << std::endl;
     }
 }
 
-set<char> getLetterList(char c) {
-    set<char> result;
+std::set<char> getLetterList(char c) {
+    std::set<char> result;
     if (isalpha(c) || c == '_') {
-        set<char> letterList = {'_'};
+        std::set<char> letterList = {'_'};
         for (char c = 'a'; c <= 'z'; c++) {
             letterList.insert(c);
         }
@@ -99,7 +103,7 @@ set<char> getLetterList(char c) {
         result = {'0'};
         return result;
     } else if (c >= '1' && c <= '9') {
-        set<char> numList;
+        std::set<char> numList;
         for (char c = '1'; c <= '9'; c++) {
             numList.insert(c);
         }

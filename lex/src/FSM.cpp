@@ -1,8 +1,16 @@
-#include "FSM.h"
+#include "../include/FSM.h"
 
-#include "util.h"
+#include "../include/TokenCodes.h"
+#include "../include/util.h"
 
-FSM::FSM(set<set<char>> charList) {
+// FSM_Node构造函数实现
+FSM_Node::FSM_Node(int id, int state, bool isEndState) {
+    this->id = id;
+    this->state = state;
+    this->isEndState = isEndState;
+}
+
+FSM::FSM(std::set<std::set<char>> charList) {
     this->charList = charList;
     this->num = 0;
     FSM_Node* firstNode = new FSM_Node(this->num, TokenCode::UNDIFNIE, false);
@@ -18,13 +26,13 @@ void FSM::addNode(FSM_Node* node) {
     this->num++;
 }
 
-void FSM::addTrans(int from, int to, set<char> chSet) {
+void FSM::addTrans(int from, int to, std::set<char> chSet) {
     FSM_Node* fromNode = this->index[from];
     FSM_Node* toNode = this->index[to];
     if (fromNode->trans.count(chSet)) {
         fromNode->trans[chSet].push_back(toNode);
     } else {
-        vector<FSM_Node*> v;
+        std::vector<FSM_Node*> v;
         v.push_back(toNode);
         fromNode->trans.insert({chSet, v});
     }
@@ -40,48 +48,50 @@ FSM_Node* FSM::getNode(int id) {
     }
 }
 
-set<set<char>> FSM::getCharList() { return this->charList; }
+std::set<std::set<char>> FSM::getCharList() { return this->charList; }
 
 int FSM::getNum() { return this->num; }
 
 // 该函数暂时仅用于debug
 void FSM::printFSM() {
-    cout << this->num << endl;
-    cout << "================================================================"
-         << endl;
+    std::cout << this->num << std::endl;
+    std::cout
+        << "================================================================"
+        << std::endl;
     for (int i = 0; i < this->num; i++) {
         FSM_Node* node = this->index[i];
-        cout << "num:" << node->id << endl;
+        std::cout << "num:" << node->id << std::endl;
         if (node->isEndState) {
-            cout << "END STATE!" << endl;
+            std::cout << "END STATE!" << std::endl;
         }
         if (node->trans.count(getLetterList('a'))) {
-            vector<FSM_Node*> v = node->trans[getLetterList('a')];
+            std::vector<FSM_Node*> v = node->trans[getLetterList('a')];
             for (FSM_Node* node : v) {
-                cout << "字母 -> " << node->id << endl;
+                std::cout << "字母 -> " << node->id << std::endl;
             }
         }
         if (node->trans.count(getLetterList('0'))) {
-            vector<FSM_Node*> v = node->trans[getLetterList('0')];
+            std::vector<FSM_Node*> v = node->trans[getLetterList('0')];
             for (FSM_Node* node : v) {
-                cout << "数字0 -> " << node->id << endl;
+                std::cout << "数字0 -> " << node->id << std::endl;
             }
         }
         if (node->trans.count(getLetterList('1'))) {
-            vector<FSM_Node*> v = node->trans[getLetterList('1')];
+            std::vector<FSM_Node*> v = node->trans[getLetterList('1')];
             for (FSM_Node* node : v) {
-                cout << "数字1-9 -> " << node->id << endl;
+                std::cout << "数字1-9 -> " << node->id << std::endl;
             }
         }
-        cout << "=============================================================="
-                "=="
-             << endl;
+        std::cout
+            << "=============================================================="
+               "=="
+            << std::endl;
     }
 }
 
 FSM createNFA() {
-    set<set<char>> charList;
-    set<char> letterList = {'_'};
+    std::set<std::set<char>> charList;
+    std::set<char> letterList = {'_'};
     for (char c = 'a'; c <= 'z'; c++) {
         letterList.insert(c);
     }
@@ -89,19 +99,19 @@ FSM createNFA() {
         letterList.insert(c);
     }
     charList.insert(letterList);
-    set<char> numList;
+    std::set<char> numList;
     for (char c = '1'; c <= '9'; c++) {
         numList.insert(c);
     }
     charList.insert(numList);
-    set<char> zeroList = {'0'};
+    std::set<char> zeroList = {'0'};
     charList.insert(zeroList);
     FSM NFA = FSM(charList);
 
-    NFA.addNode(new FSM_Node(1, TokenCode::INT, true));  // 只有一个数字
+    NFA.addNode(new FSM_Node(1, TokenCode::INT, true));        // 只有一个数字
     NFA.addNode(new FSM_Node(2, TokenCode::UNDIFNIE, false));  // 过渡节点
     NFA.addNode(new FSM_Node(3, TokenCode::INT, true));        // 数字
-    NFA.addNode(new FSM_Node(4, TokenCode::IDN, true));  // 只有一个字母
+    NFA.addNode(new FSM_Node(4, TokenCode::IDN, true));        // 只有一个字母
     NFA.addNode(new FSM_Node(5, TokenCode::UNDIFNIE, false));  // 过渡节点
     NFA.addNode(new FSM_Node(6, TokenCode::IDN, true));        // 标识符
 
@@ -127,10 +137,10 @@ FSM createNFA() {
 FSM NFAtoDFA(FSM NFA) {
     FSM DFA = FSM(NFA.getCharList());
 
-    stack<set<int>> nodes;  // 遍历产生新节点的栈
-    map<set<int>, int>
+    std::stack<std::set<int>> nodes;  // 遍历产生新节点的栈
+    std::map<std::set<int>, int>
         statesMap;  // 存储当前的eplision-closure(move(I,a))对应的DFA中的标号，避免重复
-    set<int> nowStates;  // 当前NFA状态集的标号集合
+    std::set<int> nowStates;  // 当前NFA状态集的标号集合
     nowStates.insert(NFA.getFisrt()->id);
     statesMap.insert({nowStates, DFA.getFisrt()->id});
     nodes.push(nowStates);
@@ -140,9 +150,9 @@ FSM NFAtoDFA(FSM NFA) {
         nodes.pop();
         for (int id : nowStates) {
             FSM_Node* node = NFA.getNode(id);
-            for (set<char> chList : NFA.getCharList()) {
+            for (std::set<char> chList : NFA.getCharList()) {
                 if (node->trans.count(chList)) {  // 通过当前符号集有边能够转移
-                    set<int> temp;  // 当前状态集转移到的I的标号集
+                    std::set<int> temp;           // 当前状态集转移到的I的标号集
                     int tokenCode = TokenCode::UNDIFNIE;
                     bool isEnd = false;
                     for (unsigned int i = 0; i < node->trans[chList].size();
@@ -166,7 +176,7 @@ FSM NFAtoDFA(FSM NFA) {
                         DFA.addNode(newNode);
                         DFA.addTrans(statesMap[nowStates], newNode->id, chList);
                         nodes.push(temp);  // 新发现的状态集需要加入栈中进行遍历
-                    } else {  // 之前就存在的状态集，添加边即可
+                    } else {               // 之前就存在的状态集，添加边即可
                         int toId = statesMap[temp];
                         DFA.addTrans(statesMap[nowStates], toId, chList);
                     }
@@ -178,8 +188,8 @@ FSM NFAtoDFA(FSM NFA) {
 }
 
 FSM minimizeDFA(FSM DFA) {
-    set<set<int>> partition;         // 状态的划分
-    set<int> endState, notEndState;  // 初始两个状态
+    std::set<std::set<int>> partition;    // 状态的划分
+    std::set<int> endState, notEndState;  // 初始两个状态
     for (int i = 0; i < DFA.getNum(); i++) {
         if (DFA.getNode(i)->isEndState) {
             endState.insert(i);
@@ -192,15 +202,15 @@ FSM minimizeDFA(FSM DFA) {
     bool isChanged = true;
     while (isChanged) {  // 循环划分
         isChanged = false;
-        for (set<int> state : partition) {  // 遍历每一个集合
+        for (std::set<int> state : partition) {  // 遍历每一个集合
             if (state.size() == 1) {
                 continue;
             }
-            for (set<char> inputSet :
-                 DFA.getCharList()) {  // 对每种输入都进行尝试
-                map<int, int> m;  // 记录每一个节点达到的最终节点对应关系
-                set<int> emptySet;  // 当前输入不能转换的节点集合
-                for (int id : state) {  // 当前输入需要对每个状态都进行尝试
+            for (std::set<char> inputSet :
+                 DFA.getCharList()) {    // 对每种输入都进行尝试
+                std::map<int, int> m;    // 记录每一个节点达到的最终节点对应关系
+                std::set<int> emptySet;  // 当前输入不能转换的节点集合
+                for (int id : state) {   // 当前输入需要对每个状态都进行尝试
                     FSM_Node* node = DFA.getNode(id);
                     if (node->trans.count(inputSet)) {
                         while (node->trans.count(inputSet)) {
@@ -216,13 +226,14 @@ FSM minimizeDFA(FSM DFA) {
                     }
                 }
 
-                map<int, set<int>> tempMap;  // 当前id与其终态点划分的对应关系
+                std::map<int, std::set<int>>
+                    tempMap;  // 当前id与其终态点划分的对应关系
                 for (int id : state) {
                     if (emptySet.count(id)) {
                         continue;
                     }
                     int toId = m[id];
-                    for (set<int> nowStateSet :
+                    for (std::set<int> nowStateSet :
                          partition) {  // 去找当前这个id落在了哪个划分里
                         if (nowStateSet.count(toId)) {
                             tempMap.insert({id, nowStateSet});
@@ -231,13 +242,14 @@ FSM minimizeDFA(FSM DFA) {
                     }
                 }  // 到现在tempMap已经存储了该state里的id分类
 
-                map<set<int>, set<int>> partToId;  // 上面这个tempMap的反向操作
+                std::map<std::set<int>, std::set<int>>
+                    partToId;  // 上面这个tempMap的反向操作
                 for (int id : state) {
                     if (emptySet.count(id)) {
                         continue;
                     }
                     if (partToId.count(tempMap[id]) == 0) {
-                        set<int> s;
+                        std::set<int> s;
                         s.insert(id);
                         partToId.insert({tempMap[id], s});
                     } else {
@@ -249,7 +261,7 @@ FSM minimizeDFA(FSM DFA) {
                     (emptySet.size() == 0 && partToId.size() > 1)) {
                     isChanged = true;
                     partition.erase(state);
-                    map<set<int>, set<int>>::iterator iter;
+                    std::map<std::set<int>, std::set<int>>::iterator iter;
                     for (iter = partToId.begin(); iter != partToId.end();
                          iter++) {
                         partition.insert(iter->second);
@@ -264,15 +276,15 @@ FSM minimizeDFA(FSM DFA) {
         }
     }  // 到现在完成了划分，下面要根据这些划分构造新的miniDFA
     FSM miniDFA = FSM(DFA.getCharList());
-    for (set<int> s : partition) {  // 先设置好所有的点
+    for (std::set<int> s : partition) {  // 先设置好所有的点
         if (s.count(miniDFA.getFisrt()->id)) {
             continue;
         }
         miniDFA.addNode(new FSM_Node(*s.begin(), DFA.getNode(*s.begin())->state,
                                      DFA.getNode(*s.begin())->isEndState));
     }
-    for (set<int> s : partition) {  // 为每个点添加边
-        FSM_Node* node;             // node是当前划分的代表
+    for (std::set<int> s : partition) {  // 为每个点添加边
+        FSM_Node* node;                  // node是当前划分的代表
         if (s.count(miniDFA.getFisrt()->id)) {
             node = miniDFA.getFisrt();
         } else {
@@ -280,7 +292,7 @@ FSM minimizeDFA(FSM DFA) {
         }
         for (int id : s) {  // 遍历当前划分的每个点
             FSM_Node* rawNode = DFA.getNode(id);
-            map<set<char>, vector<FSM_Node*>>::iterator iter;
+            std::map<std::set<char>, std::vector<FSM_Node*>>::iterator iter;
             // 遍历这个点的每条边
             for (iter = rawNode->trans.begin(); iter != rawNode->trans.end();
                  iter++) {
@@ -290,7 +302,7 @@ FSM minimizeDFA(FSM DFA) {
                 }
                 int rawToId = iter->second[0]->id;  // 原DFA中这个节点的id
                 int newToId = rawToId;
-                for (set<int> tempS : partition) {
+                for (std::set<int> tempS : partition) {
                     if (tempS.count(rawToId)) {
                         newToId = *tempS.begin();  // 找到划分的代表
                         break;
@@ -303,7 +315,7 @@ FSM minimizeDFA(FSM DFA) {
     return miniDFA;
 }
 
-int identity(FSM DFA, string token) {
+int identity(FSM DFA, std::string token) {
     FSM_Node* node = DFA.getFisrt();
     bool success = true;
     for (unsigned int i = 0; i < token.length(); i++) {

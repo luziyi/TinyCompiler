@@ -1,13 +1,11 @@
 #include "../include/lexical.h"
 
-using namespace std;
-
-set<string> keyword = {"int", "void", "return", "const", "main"};
-set<char> boundary = {'(', ')', '{', '}', ';', ','};
-set<char> operation = {'+', '-', '*', '/', '%', '=', '>', '<'};
-set<char> operationBeginChar = {'=', '<', '>', '!', '&', '|'};
-set<string> operationOf2Char = {"==", "<=", ">=", "!=", "&&", "||"};
-map<std::string, int> tokenCodeMap = {
+std::set<std::string> keyword = {"int", "void", "return", "const", "main"};
+std::set<char> boundary = {'(', ')', '{', '}', ';', ','};
+std::set<char> operation = {'+', '-', '*', '/', '%', '=', '>', '<'};
+std::set<char> operationBeginChar = {'=', '<', '>', '!', '&', '|'};
+std::set<std::string> operationOf2Char = {"==", "<=", ">=", "!=", "&&", "||"};
+std::map<std::string, int> tokenCodeMap = {
     {"int", TokenCode::KW_INT},       {"void", TokenCode::KW_VOID},
     {"return", TokenCode::KW_RETURN}, {"const", TokenCode::KW_CONST},
     {"main", TokenCode::KW_MAIN},     {"+", TokenCode::OP_PLUS},
@@ -29,7 +27,7 @@ FSM miniDFA = minimizeDFA(DFA);
 int lineNum = 0;
 
 // 使用自动机分析token
-void analyseToken(string token) {
+void analyseToken(std::string token) {
     if (token.length() <= 0) {
         return;
     }
@@ -55,29 +53,29 @@ void analyseToken(string token) {
     }
 }
 
-void lexicalAnalysis(string fileName) {
-    cout << "开始词法分析，文件：" << fileName << endl;
+void lexicalAnalysis(std::string fileName) {
+    std::cout << "开始词法分析，文件：" << fileName << std::endl;
 
     FILE* fp;
     fp = fopen(lexicalTxtPath, "w");
     if (fp == NULL) {
-        cout << "错误：无法打开输出文件 " << lexicalTxtPath << endl;
+        std::cout << "错误：无法打开输出文件 " << lexicalTxtPath << std::endl;
         return;
     }
     fwrite("", 0, 1, fp);
     fclose(fp);
 
-    ifstream file;
+    std::ifstream file;
     file.open(fileName, std::ios::in);
     if (!file.is_open()) {
-        cout << "错误：无法打开源文件 " << fileName << endl;
+        std::cout << "错误：无法打开源文件 " << fileName << std::endl;
         return;
     }
 
-    cout << "已打开源文件，开始分析..." << endl;
+    std::cout << "已打开源文件，开始分析..." << std::endl;
 
     char c;
-    string token = "";
+    std::string token = "";
     /**
      * 算法概括：
      * 除了分割符和已经定义好的界符和运算符之外，其余所有!所有！token序列都应交给自动机判断
@@ -93,7 +91,7 @@ void lexicalAnalysis(string fileName) {
             continue;
         } else if (boundary.count(c)) {  // 界符
             analyseToken(token);
-            token = string(1, c);
+            token = std::string(1, c);
             printToken(token, tokenCodeMap[token], lineNum);
             token = "";
             continue;
@@ -102,7 +100,7 @@ void lexicalAnalysis(string fileName) {
             analyseToken(token);
             if (operationBeginChar.count(c)) {  // 有可能是两个字符组成的运算符
                 char nextChar = file.get();
-                string tryOp = "";
+                std::string tryOp = "";
                 tryOp += c;
                 tryOp += nextChar;
                 if (operationOf2Char.count(
@@ -111,17 +109,17 @@ void lexicalAnalysis(string fileName) {
                     printToken(token, tokenCodeMap[token], lineNum);
                 } else if (operation.count(
                                c)) {  // 普通的由一个字符组成的运算符
-                    token = string(1, c);
+                    token = std::string(1, c);
                     printToken(token, tokenCodeMap[token], lineNum);
                     file.putback(nextChar);
                 } else {
                     // 出错了，错误token
-                    token = string(1, c);
+                    token = std::string(1, c);
                     printToken(token, TokenCode::UNDIFNIE, lineNum);
                     file.putback(nextChar);
                 }
             } else {  // 这就是一个字符组成的运算符
-                token = string(1, c);
+                token = std::string(1, c);
                 printToken(token, tokenCodeMap[token], lineNum);
             }
             token = "";
@@ -130,11 +128,11 @@ void lexicalAnalysis(string fileName) {
         }
     }
 
-    cout << "文件分析完成，处理最后一个token..." << endl;
+    std::cout << "文件分析完成，处理最后一个token..." << std::endl;
     analyseToken(token);  // 处理文件结束时可能存在的最后一个token
 
-    cout << "准备输出符号表..." << endl;
+    std::cout << "准备输出符号表..." << std::endl;
     symbolTable.printTable();
 
-    cout << "词法分析完成！" << endl;
+    std::cout << "词法分析完成！" << std::endl;
 }
