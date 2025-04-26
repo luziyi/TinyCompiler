@@ -33,7 +33,6 @@ void getVnVt() {
     bool left = 1;
     int Id;
     std::string str = "";
-    int line = 0;
     while ((c = getchar()) != EOF) {
         if (c == '\n') {
             Vt.insert(cur);

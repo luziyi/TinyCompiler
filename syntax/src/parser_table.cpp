@@ -40,7 +40,7 @@ bool getTable() {
     for (std::string token : Vn) {
         int Id = Map[token];
         bool hasE = false;
-        for (int i = 0; i < v[Id].size(); i++) {
+        for (size_t i = 0; i < v[Id].size(); i++) {
             std::set<std::string> st;
             std::vector<std::string> vv = v[Id][i];
             bool theE = true;

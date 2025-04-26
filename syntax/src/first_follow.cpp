@@ -28,7 +28,7 @@ void getFirst(std::string token) {
     }
     int Id = Map[token];
     std::set<std::string> st;
-    for (int i = 0; i < v[Id].size(); i++) {
+    for (size_t i = 0; i < v[Id].size(); i++) {
         std::vector<std::string> vv = v[Id][i];
         bool AllHasE = 1;
         for (std::string str : vv) {
@@ -50,7 +50,7 @@ void getFirst(std::string token) {
         if (AllHasE) st.insert("$");
     }
     first[token] = st;
-    for (int i = 0; i < v[Id].size(); i++) {
+    for (size_t i = 0; i < v[Id].size(); i++) {
         std::vector<std::string> vv = v[Id][i];
         for (std::string str : vv) {
             getFirst(str);
@@ -72,9 +72,9 @@ bool getFollow() {
             follow[token] = st;
         }
         std::set<std::string> st = follow[token];
-        int size_before = st.size();
+        size_t size_before = st.size();
         for (int i = 1; i <= v_cnt; i++) {
-            for (int j = 0; j < v[i].size(); j++) {
+            for (size_t j = 0; j < v[i].size(); j++) {
                 std::vector<std::string> vv = v[i][j];
                 bool found = false;
                 bool hasNotE = false;
