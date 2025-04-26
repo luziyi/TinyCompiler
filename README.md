@@ -86,6 +86,8 @@ cmake --build .
 make
 ```
 
+**详细的构建指南**请查看[编译构建流程](docs/BUILD.md)文档，其中包含了在 Windows、Linux 和 macOS 等不同环境下，使用不同编译器(MSVC、MinGW、GCC/G++)的详细构建步骤。
+
 ### 运行编译器
 
 ```bash
