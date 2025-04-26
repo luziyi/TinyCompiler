@@ -1,12 +1,5 @@
-#include <fstream>
-#include <iostream>
-#include <map>
-#include <set>
-#include <string>
+#include "../include/lexical.h"
 
-#include "FSM.h"
-#include "SymbolTable.h"
-#include "util.h"
 using namespace std;
 
 set<string> keyword = {"int", "void", "return", "const", "main"};

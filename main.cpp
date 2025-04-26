@@ -3,9 +3,7 @@
 #include <string>
 
 // 引入词法分析器头文件
-#include "FSM.h"
-#include "SymbolTable.h"
-#include "util.h"
+#include "lexical.h"
 
 // 引入语法分析器头文件
 #include "syntax.h"
