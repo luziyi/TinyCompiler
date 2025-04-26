@@ -1,24 +1,25 @@
 #include "../include/lexical.h"
 
-std::set<std::string> keyword = {"int", "void", "return", "const", "main"};
+std::set<std::string> keyword = {"int",    "float", "void",
+                                 "return", "const", "main"};
 std::set<char> boundary = {'(', ')', '{', '}', ';', ','};
 std::set<char> operation = {'+', '-', '*', '/', '%', '=', '>', '<'};
 std::set<char> operationBeginChar = {'=', '<', '>', '!', '&', '|'};
 std::set<std::string> operationOf2Char = {"==", "<=", ">=", "!=", "&&", "||"};
 std::map<std::string, int> tokenCodeMap = {
-    {"int", TokenCode::KW_INT},       {"void", TokenCode::KW_VOID},
-    {"return", TokenCode::KW_RETURN}, {"const", TokenCode::KW_CONST},
-    {"main", TokenCode::KW_MAIN},     {"+", TokenCode::OP_PLUS},
-    {"-", TokenCode::OP_MINUS},       {"*", TokenCode::OP_MULTIPLY},
-    {"/", TokenCode::OP_DIVIDE},      {"%", TokenCode::OP_PERCENT},
-    {"=", TokenCode::OP_ASSIGN},      {">", TokenCode::OP_GT},
-    {"<", TokenCode::OP_LT},          {"==", TokenCode::OP_EQUAL},
-    {"<=", TokenCode::OP_LEQ},        {">=", TokenCode::OP_GEQ},
-    {"!=", TokenCode::OP_NEQ},        {"&&", TokenCode::OP_AND},
-    {"||", TokenCode::OP_OR},         {"(", TokenCode::SE_LPARENT},
-    {")", TokenCode::SE_RPARENT},     {"{", TokenCode::SE_LBRACES},
-    {"}", TokenCode::SE_RBARCES},     {";", TokenCode::SE_SEMICOLON},
-    {",", TokenCode::SE_COMMA}};
+    {"int", TokenCode::KW_INT},     {"void", TokenCode::KW_VOID},
+    {"float", TokenCode::KW_FLOAT}, {"return", TokenCode::KW_RETURN},
+    {"const", TokenCode::KW_CONST}, {"main", TokenCode::KW_MAIN},
+    {"+", TokenCode::OP_PLUS},      {"-", TokenCode::OP_MINUS},
+    {"*", TokenCode::OP_MULTIPLY},  {"/", TokenCode::OP_DIVIDE},
+    {"%", TokenCode::OP_PERCENT},   {"=", TokenCode::OP_ASSIGN},
+    {">", TokenCode::OP_GT},        {"<", TokenCode::OP_LT},
+    {"==", TokenCode::OP_EQUAL},    {"<=", TokenCode::OP_LEQ},
+    {">=", TokenCode::OP_GEQ},      {"!=", TokenCode::OP_NEQ},
+    {"&&", TokenCode::OP_AND},      {"||", TokenCode::OP_OR},
+    {"(", TokenCode::SE_LPARENT},   {")", TokenCode::SE_RPARENT},
+    {"{", TokenCode::SE_LBRACES},   {"}", TokenCode::SE_RBARCES},
+    {";", TokenCode::SE_SEMICOLON}, {",", TokenCode::SE_COMMA}};
 
 SymbolTable symbolTable = SymbolTable();
 FSM NFA = createNFA();

@@ -17,6 +17,7 @@ argVarDef -> = initVal
 argVarDef -> $
 initVal -> exp
 bType -> int
+bType -> float
 funcDef -> funcType Ident ( funcFParams ) block
 funcType -> void
 funcFParams -> funcFParam argFunctionF

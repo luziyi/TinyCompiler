@@ -19,15 +19,15 @@ assignExp
 assignExpAtom
  -- '$' '=' 
 bType
- -- 'int' 
+ -- 'float' 'int' 
 block
  -- '{' 
 blockItem
- -- '!' '$' '(' '+' '-' ';' 'INT' 'Ident' 'const' 'int' 'return' '{' 
+ -- '!' '$' '(' '+' '-' ';' 'INT' 'Ident' 'const' 'float' 'int' 'return' '{' 
 callFunc
  -- '$' '(' 
 compUnit
- -- '$' 'const' 'int' 'void' 
+ -- '$' 'const' 'float' 'int' 'void' 
 constDecl
  -- 'const' 
 constDef
@@ -37,7 +37,7 @@ constExp
 constInitVal
  -- '!' '(' '+' '-' 'INT' 'Ident' 
 decl
- -- 'const' 'int' 
+ -- 'const' 'float' 'int' 
 eqExp
  -- '!' '(' '+' '-' 'INT' 'Ident' 
 eqExpAtom
@@ -47,9 +47,9 @@ exp
 funcDef
  -- 'void' 
 funcFParam
- -- 'int' 
+ -- 'float' 'int' 
 funcFParams
- -- '$' 'int' 
+ -- '$' 'float' 'int' 
 funcRParam
  -- '!' '(' '+' '-' 'INT' 'Ident' 
 funcRParams
@@ -69,7 +69,7 @@ number
 primaryExp
  -- '(' 'INT' 
 program
- -- '$' 'const' 'int' 'void' 
+ -- '$' 'const' 'float' 'int' 'void' 
 relExp
  -- '!' '(' '+' '-' 'INT' 'Ident' 
 relExpAtom
@@ -81,6 +81,6 @@ unaryExp
 unaryOp
  -- '!' '+' '-' 
 varDecl
- -- 'int' 
+ -- 'float' 'int' 
 varDef
  -- 'Ident' 

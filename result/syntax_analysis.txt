@@ -1,9 +1,9 @@
-1 program#int	reduction
-2 compUnit#int	reduction
-3 decl#int	reduction
-4 varDecl#int	reduction
-5 bType#int	reduction
-6 int#int	move
+1 program#float	reduction
+2 compUnit#float	reduction
+3 decl#float	reduction
+4 varDecl#float	reduction
+5 bType#float	reduction
+6 float#float	move
 7 varDef#Ident	reduction
 8 Ident#Ident	move
 9 argVarDef#=	reduction

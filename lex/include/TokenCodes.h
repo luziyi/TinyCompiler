@@ -6,6 +6,7 @@ enum TokenCode {
 
     /*KW 关键字*/
     KW_INT,     // int
+    KW_FLOAT,   // float
     KW_VOID,    // void
     KW_RETURN,  // return
     KW_CONST,   // const

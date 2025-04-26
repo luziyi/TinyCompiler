@@ -30,6 +30,7 @@ void printToken(std::string token, int code, int lineNum) {
     result += "<";
     switch (code) {
         case TokenCode::KW_INT:
+        case TokenCode::KW_FLOAT:
         case TokenCode::KW_VOID:
         case TokenCode::KW_RETURN:
         case TokenCode::KW_CONST:
