@@ -1,11 +1,11 @@
 addExp
- -- '!' '(' '+' '-' 'INT' 'Ident' 
+ -- '!' '(' '+' '-' 'FLOAT' 'INT' 'Ident' 
 addExpAtom
  -- '$' '+' '-' 
 argConst
  -- '$' ',' 
 argExp
- -- '!' '$' '(' '+' '-' 'INT' 'Ident' 
+ -- '!' '$' '(' '+' '-' 'FLOAT' 'INT' 'Ident' 
 argFunctionF
  -- '$' ',' 
 argFunctionR
@@ -15,7 +15,7 @@ argVarDecl
 argVarDef
  -- '$' '=' 
 assignExp
- -- '!' '(' '+' '-' 'INT' 'Ident' 
+ -- '!' '(' '+' '-' 'FLOAT' 'INT' 'Ident' 
 assignExpAtom
  -- '$' '=' 
 bType
@@ -23,7 +23,7 @@ bType
 block
  -- '{' 
 blockItem
- -- '!' '$' '(' '+' '-' ';' 'INT' 'Ident' 'const' 'float' 'int' 'return' '{' 
+ -- '!' '$' '(' '+' '-' ';' 'FLOAT' 'INT' 'Ident' 'const' 'float' 'int' 'return' '{' 
 callFunc
  -- '$' '(' 
 compUnit
@@ -33,17 +33,17 @@ constDecl
 constDef
  -- 'Ident' 
 constExp
- -- '!' '(' '+' '-' 'INT' 'Ident' 
+ -- '!' '(' '+' '-' 'FLOAT' 'INT' 'Ident' 
 constInitVal
- -- '!' '(' '+' '-' 'INT' 'Ident' 
+ -- '!' '(' '+' '-' 'FLOAT' 'INT' 'Ident' 
 decl
  -- 'const' 'float' 'int' 
 eqExp
- -- '!' '(' '+' '-' 'INT' 'Ident' 
+ -- '!' '(' '+' '-' 'FLOAT' 'INT' 'Ident' 
 eqExpAtom
  -- '!=' '$' '==' 
 exp
- -- '!' '(' '+' '-' 'INT' 'Ident' 
+ -- '!' '(' '+' '-' 'FLOAT' 'INT' 'Ident' 
 funcDef
  -- 'void' 
 funcFParam
@@ -51,33 +51,33 @@ funcFParam
 funcFParams
  -- '$' 'float' 'int' 
 funcRParam
- -- '!' '(' '+' '-' 'INT' 'Ident' 
+ -- '!' '(' '+' '-' 'FLOAT' 'INT' 'Ident' 
 funcRParams
- -- '!' '$' '(' '+' '-' 'INT' 'Ident' 
+ -- '!' '$' '(' '+' '-' 'FLOAT' 'INT' 'Ident' 
 funcType
  -- 'void' 
 initVal
- -- '!' '(' '+' '-' 'INT' 'Ident' 
+ -- '!' '(' '+' '-' 'FLOAT' 'INT' 'Ident' 
 lVal
  -- 
 mulExp
- -- '!' '(' '+' '-' 'INT' 'Ident' 
+ -- '!' '(' '+' '-' 'FLOAT' 'INT' 'Ident' 
 mulExpAtom
  -- '$' '%' '*' '/' 
 number
- -- 'INT' 
+ -- 'FLOAT' 'INT' 
 primaryExp
- -- '(' 'INT' 
+ -- '(' 'FLOAT' 'INT' 
 program
  -- '$' 'const' 'float' 'int' 'void' 
 relExp
- -- '!' '(' '+' '-' 'INT' 'Ident' 
+ -- '!' '(' '+' '-' 'FLOAT' 'INT' 'Ident' 
 relExpAtom
  -- '$' '<' '<=' '>' '>=' 
 stmt
- -- '!' '(' '+' '-' ';' 'INT' 'Ident' 'return' '{' 
+ -- '!' '(' '+' '-' ';' 'FLOAT' 'INT' 'Ident' 'return' '{' 
 unaryExp
- -- '!' '(' '+' '-' 'INT' 'Ident' 
+ -- '!' '(' '+' '-' 'FLOAT' 'INT' 'Ident' 
 unaryOp
  -- '!' '+' '-' 
 varDecl

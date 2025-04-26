@@ -1,6 +1,6 @@
 program -> compUnit
 compUnit -> decl compUnit
-compUnit -> funcDef  compUnit
+compUnit -> funcDef compUnit
 compUnit -> $
 decl -> constDecl
 decl -> varDecl
@@ -40,6 +40,7 @@ lVal -> Ident
 primaryExp -> ( exp )
 primaryExp -> number
 number -> INT
+number -> FLOAT
 unaryOp ->  +
 unaryOp ->  -
 unaryOp ->  !

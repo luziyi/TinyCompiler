@@ -1,4 +1,4 @@
-float a = 3,b = 1,c = 3;
+float a = 3.2,b = 1,c = 3;
 
 void func(){
     int a = 5;

@@ -106,6 +106,8 @@ FSM createNFA() {
     charList.insert(numList);
     std::set<char> zeroList = {'0'};
     charList.insert(zeroList);
+    std::set<char> dotList = {'.'};  // 添加小数点字符集
+    charList.insert(dotList);
     FSM NFA = FSM(charList);
 
     NFA.addNode(new FSM_Node(1, TokenCode::INT, true));        // 只有一个数字
@@ -114,6 +116,8 @@ FSM createNFA() {
     NFA.addNode(new FSM_Node(4, TokenCode::IDN, true));        // 只有一个字母
     NFA.addNode(new FSM_Node(5, TokenCode::UNDIFNIE, false));  // 过渡节点
     NFA.addNode(new FSM_Node(6, TokenCode::IDN, true));        // 标识符
+    NFA.addNode(new FSM_Node(7, TokenCode::UNDIFNIE, false));  // 小数点后的过渡状态
+    NFA.addNode(new FSM_Node(8, TokenCode::FLOAT, true));      // 浮点数终态
 
     NFA.addTrans(0, 1, zeroList);
     NFA.addTrans(0, 1, numList);
@@ -122,6 +126,14 @@ FSM createNFA() {
     NFA.addTrans(2, 2, numList);
     NFA.addTrans(2, 3, zeroList);
     NFA.addTrans(2, 3, numList);
+
+    // 添加浮点数识别的转换规则
+    NFA.addTrans(1, 7, dotList);    // 单个数字后接小数点
+    NFA.addTrans(3, 7, dotList);    // 多个数字后接小数点
+    NFA.addTrans(7, 8, zeroList);   // 小数点后至少一个数字
+    NFA.addTrans(7, 8, numList);
+    NFA.addTrans(8, 8, zeroList);   // 小数点后可以有多个数字
+    NFA.addTrans(8, 8, numList);
 
     NFA.addTrans(0, 4, letterList);
     NFA.addTrans(0, 5, letterList);

@@ -21,7 +21,7 @@ assignExpAtom
 bType
  -- 'Ident' 
 block
- -- '!' '#' '(' '+' '-' ';' 'INT' 'Ident' 'const' 'float' 'int' 'return' 'void' '{' '}' 
+ -- '!' '#' '(' '+' '-' ';' 'FLOAT' 'INT' 'Ident' 'const' 'float' 'int' 'return' 'void' '{' '}' 
 blockItem
  -- '}' 
 callFunc
@@ -29,7 +29,7 @@ callFunc
 compUnit
  -- '#' 
 constDecl
- -- '!' '#' '(' '+' '-' ';' 'INT' 'Ident' 'const' 'float' 'int' 'return' 'void' '{' '}' 
+ -- '!' '#' '(' '+' '-' ';' 'FLOAT' 'INT' 'Ident' 'const' 'float' 'int' 'return' 'void' '{' '}' 
 constDef
  -- ',' ';' 
 constExp
@@ -37,7 +37,7 @@ constExp
 constInitVal
  -- ',' ';' 
 decl
- -- '!' '#' '(' '+' '-' ';' 'INT' 'Ident' 'const' 'float' 'int' 'return' 'void' '{' '}' 
+ -- '!' '#' '(' '+' '-' ';' 'FLOAT' 'INT' 'Ident' 'const' 'float' 'int' 'return' 'void' '{' '}' 
 eqExp
  -- ')' ',' ';' '=' 
 eqExpAtom
@@ -75,12 +75,12 @@ relExp
 relExpAtom
  -- '!=' ')' ',' ';' '=' '==' 
 stmt
- -- '!' '(' '+' '-' ';' 'INT' 'Ident' 'const' 'float' 'int' 'return' '{' '}' 
+ -- '!' '(' '+' '-' ';' 'FLOAT' 'INT' 'Ident' 'const' 'float' 'int' 'return' '{' '}' 
 unaryExp
  -- '!=' '%' ')' '*' '+' ',' '-' '/' ';' '<' '<=' '=' '==' '>' '>=' 
 unaryOp
- -- '!' '(' '+' '-' 'INT' 'Ident' 
+ -- '!' '(' '+' '-' 'FLOAT' 'INT' 'Ident' 
 varDecl
- -- '!' '#' '(' '+' '-' ';' 'INT' 'Ident' 'const' 'float' 'int' 'return' 'void' '{' '}' 
+ -- '!' '#' '(' '+' '-' ';' 'FLOAT' 'INT' 'Ident' 'const' 'float' 'int' 'return' 'void' '{' '}' 
 varDef
  -- ',' ';' 

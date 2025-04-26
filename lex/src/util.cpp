@@ -69,12 +69,16 @@ void printToken(std::string token, int code, int lineNum) {
         case TokenCode::INT:
             result += "INT";
             break;
+        case TokenCode::FLOAT:
+            result += "FLOAT";
+            break;
 
         case TokenCode::UNDIFNIE:
             result += "UNDIFNIE";
             break;
     }
-    if (code != TokenCode::IDN && code != TokenCode::INT) {
+    if (code != TokenCode::IDN && code != TokenCode::INT &&
+        code != TokenCode::FLOAT) {
         result += "," + std::to_string(code) + ">";
     } else {
         result += "," + token + ">";
@@ -109,6 +113,10 @@ std::set<char> getLetterList(char c) {
             numList.insert(c);
         }
         return numList;
+    } else if (c == '.') {
+        // 支持小数点字符
+        result = {'.'};
+        return result;
     }
     return result;
 }

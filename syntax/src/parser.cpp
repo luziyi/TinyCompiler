@@ -31,7 +31,7 @@ void getChars(std::string str) {
     while (str[id] != ',') c2 += str[id++];
     id++;
     while (str[id] != '>') c3 += str[id++];
-    if (c2 != "Ident" && c2 != "INT") {
+    if (c2 != "Ident" && c2 != "INT" && c2 != "FLOAT") {
         chars.push_back(c1);
     } else
         chars.push_back(c2);

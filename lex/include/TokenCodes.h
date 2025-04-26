@@ -36,8 +36,9 @@ enum TokenCode {
     SE_SEMICOLON,  // ;
     SE_COMMA,      // ,
 
-    IDN,  // 标识符: (letter|_)(letter|digit|_)*
-    INT   // 整数: digit digit*
+    IDN,   // 标识符: (letter|_)(letter|digit|_)*
+    INT,   // 整数: digit digit*
+    FLOAT  // 浮点数: digit digit* . digit digit*
 };
 
 #endif
