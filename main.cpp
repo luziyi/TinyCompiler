@@ -1,36 +1,49 @@
+#include <cstdlib>
 #include <iostream>
 #include <string>
 
-#include "lex/include/Lexer.h"
-#include "syntax/include/LL1Parser.h"
+// 引入词法分析器头文件
+#include "FSM.h"
+#include "SymbolTable.h"
+#include "util.h"
 
-using namespace tiny_compiler;
+// 引入语法分析器头文件
+#include "syntax.h"
 
-int main() {
-    // 使用一个极其简单的测试用例
-    std::string source = "int a;";
+using namespace std;
 
-    // 词法分析
-    Lexer lexer(source);
-    auto tokens = lexer.getAllTokens();
+void printBanner() {
+    cout << "==================================================" << endl;
+    cout << "               简易编译器" << endl;
+    cout << "==================================================" << endl;
+    cout << "       包含功能：词法分析 + 语法分析" << endl;
+    cout << "==================================================" << endl;
+}
 
-    std::cout << "词法分析结果：" << std::endl;
-    for (const auto& token : tokens) {
-        std::cout << token.toString() << std::endl;
-    }
+int main(int argc, char** argv) {
+    printBanner();
 
-    // 语法分析
-    LL1Parser parser(source);
-
-    std::cout << "\n语法分析开始..." << std::endl;
-    bool success = parser.parse();
-
-    if (success) {
-        std::cout << "语法分析成功！" << std::endl;
+    string fileName;
+    if (argc == 1) {
+        cout << "未指定源文件，使用默认文件 'test.sy'" << endl;
+        fileName = "./data/test.sy";
     } else {
-        std::cout << "语法分析失败！" << std::endl;
-        std::cout << "错误信息: " << parser.getErrorMessage() << std::endl;
+        fileName = argv[1];
+        cout << "使用指定源文件：" << fileName << endl;
     }
+
+    cout << "\n第一步：执行词法分析..." << endl;
+    // 调用词法分析
+    lexicalAnalysis(fileName);
+
+    cout << "词法分析完成，结果保存在 lexical.txt 文件中" << endl;
+
+    cout << "\n第二步：执行语法分析..." << endl;
+    // 调用语法分析
+    syntax();
+    cout << "语法分析完成，结果保存在 syntax_analysis.txt 文件中" << endl;
+
+    cout << "\n编译过程完成！" << endl;
 
     return 0;
 }

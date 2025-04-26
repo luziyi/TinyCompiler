@@ -1,6 +1,6 @@
 # TinyCompiler (C--编译器)
 
-一个用C++实现的C语言子集(C--)编译器项目，包含词法分析器和语法分析器组件。
+一个用 C++实现的 C 语言子集(C--)编译器项目，包含词法分析器和语法分析器组件。
 
 ## 目录结构
 
@@ -8,42 +8,66 @@
 TinyCompiler/
 ├── lex/                  # 词法分析器模块
 │   ├── include/          # 词法分析器头文件
-│   │   ├── Lexer.h       # 词法分析器主类
-│   │   └── Token.h       # 词法单元类和类型定义
-│   ├── src/              # 词法分析器源文件
-│   ├── test/             # 词法分析器测试
-│   └── CMakeLists.txt    # 词法分析器编译配置
+│   │   ├── FSM.h         # 有限状态机
+│   │   ├── SymbolTable.h # 符号表
+│   │   ├── TokenCodes.h  # 词法单元类型定义
+│   │   └── util.h        # 实用工具函数
+│   └── src/              # 词法分析器源文件
+│       ├── FSM.cpp       # 有限状态机实现
+│       ├── lexical.cpp   # 词法分析主要实现
+│       ├── SymbolTable.cpp # 符号表实现
+│       └── util.cpp      # 工具函数实现
 ├── syntax/               # 语法分析器模块
 │   ├── include/          # 语法分析器头文件
-│   ├── src/              # 语法分析器源文件
-│   └── test/             # 语法分析器测试
-├── test/                 # 集成测试
-├── docs/                 # 项目文档
-├── build/                # 构建目录（自动生成）
+│   │   ├── first_follow.h # First和Follow集合
+│   │   ├── grammar.h     # 语法规则
+│   │   ├── parser.h      # 语法解析器
+│   │   ├── parser_table.h # 预测分析表
+│   │   └── syntax.h      # 语法分析主接口
+│   └── src/              # 语法分析器源文件
+│       ├── first_follow.cpp # First和Follow集合实现
+│       ├── grammar.cpp   # 语法规则实现
+│       ├── parser.cpp    # 语法解析器实现
+│       ├── parser_table.cpp # 预测分析表实现
+│       └── syntax.cpp    # 语法分析主接口实现
+├── data/                 # 测试和语法规则数据
+│   ├── grammer.txt       # 语法规则定义文件
+│   └── test.sy           # 测试源代码文件
+├── result/               # 分析结果输出目录
+│   ├── first.txt         # First集合输出
+│   ├── follow.txt        # Follow集合输出
+│   ├── lexical.txt       # 词法分析结果
+│   ├── symbolTable.txt   # 符号表输出
+│   ├── syntax_analysis.txt # 语法分析结果
+│   └── table.txt         # 预测分析表输出
+├── lib/                  # 生成的库文件
+├── build/                # 构建目录（编译生成）
 ├── main.cpp              # 主程序入口
 ├── CMakeLists.txt        # 主编译配置
-├── LICENSE.md            # 许可证
 └── README.md             # 本文件
 ```
 
 ## 功能特性
 
 1. 词法分析
-   - 支持C--语言的基本词法单元识别
-   - 实现了自动机和符号表
+
+   - 支持 C--语言的基本词法单元识别
+   - 实现了有限状态机和符号表
    - 支持错误检测和报告
 
 2. 语法分析
-   - 实现LL(1)文法分析
-   - 支持基本的语法结构解析
-   - 生成语法分析树
+   - 实现 LL(1)文法分析
+   - 支持 First 集合和 Follow 集合计算
+   - 生成预测分析表
+   - 执行语法分析并输出分析过程
 
 ## 编译方式
 
-本项目使用CMake构建系统。按照以下步骤编译项目：
+本项目使用 CMake 构建系统。按照以下步骤编译项目：
 
 ### 前置条件
-- C++17兼容的编译器
+
+- C++17 兼容的编译器
 - CMake (版本 >= 3.10)
 
 ### 编译步骤
@@ -60,98 +84,56 @@ cmake ..
 cmake --build .
 # 或者直接使用
 make
-
-# 运行编译器
-./bin/compiler <输入文件路径>
 ```
 
-### 运行测试
+### 运行编译器
 
 ```bash
-cd build
-ctest
+# 编译完成后，在项目根目录运行
+./compiler [源文件路径]
+
+# 如果不指定源文件路径，默认使用 data/test.sy
 ```
 
-## Lex 模块接口
+## 分析流程
 
-Lex模块提供词法分析功能，将源代码转换为词法单元（Token）序列。
+编译器执行以下步骤：
 
-### 主要类
+1. 读取源代码文件
+2. 执行词法分析，生成词法单元序列
+3. 读取语法规则文件 (data/grammer.txt)
+4. 构建 First 集合和 Follow 集合
+5. 生成预测分析表
+6. 执行语法分析
+7. 输出分析结果到 result 目录
 
-#### Token 类 (Token.h)
+## 实现细节
 
-Token类表示源代码中的词法单元。
+### 词法分析器
 
-```cpp
-class Token {
-public:
-    Token(TokenType type, const std::string& lexeme, int line);
-    
-    TokenType getType() const;           // 获取token类型
-    const std::string& getLexeme() const; // 获取token的词素
-    int getLine() const;                 // 获取token所在行号
-    std::string toString() const;        // 将token转换为字符串（调试用）
-};
-```
+词法分析器使用确定有限状态机(DFA)识别词法单元：
 
-支持的Token类型包括：
-- 关键字：CONST, INT, FLOAT, VOID, IF, ELSE, RETURN
-- 标识符：IDENTIFIER
-- 常量：INT_CONST, FLOAT_CONST
-- 运算符：PLUS, MINUS, MULTIPLY, DIVIDE, MOD, ASSIGN, EQ, NEQ, LT, GT, LE, GE, AND, OR, NOT
-- 分隔符：LPAREN, RPAREN, LBRACE, RBRACE, SEMICOLON, COMMA
-- 特殊token：EOF_TOKEN, ERROR
+- 标识符和关键字
+- 数字常量
+- 运算符 (+, -, \*, /, %, =, >, <, ==, <=, >=, !=, &&, ||)
+- 界符 ((, ), {, }, ;, ,)
 
-#### Lexer 类 (Lexer.h)
+所有识别的词法单元会输出到 result/lexical.txt 文件中。
 
-Lexer类负责将源代码分解为Token序列。
+### 语法分析器
 
-```cpp
-class Lexer {
-public:
-    explicit Lexer(const std::string& source);  // 从源代码创建词法分析器
-    
-    Token nextToken();                      // 获取下一个token并前进
-    Token peekToken();                      // 预览下一个token但不移动指针
-    std::vector<Token> getAllTokens();      // 获取所有token
-};
-```
+语法分析器实现了 LL(1)预测分析方法：
 
-### 使用示例
+1. 从语法规则文件读取文法
+2. 构建非终结符和终结符集合
+3. 计算 First 集合和 Follow 集合
+4. 构建预测分析表
+5. 使用分析表执行自顶向下的语法分析
 
-```cpp
-#include "lex/include/Lexer.h"
-#include <iostream>
-
-void tokenizeSource(const std::string& source) {
-    tiny_compiler::Lexer lexer(source);
-    
-    // 逐个处理Token
-    tiny_compiler::Token token = lexer.nextToken();
-    while (token.getType() != tiny_compiler::TokenType::EOF_TOKEN) {
-        std::cout << token.toString() << std::endl;
-        token = lexer.nextToken();
-    }
-    
-    // 或者一次性获取所有Token
-    // std::vector<tiny_compiler::Token> tokens = lexer.getAllTokens();
-}
-```
+分析结果输出到 result/syntax_analysis.txt 文件中。
 
 ## 开发环境
 
-- 编程语言：C++ 17
-- 构建工具：CMake 3.10+
-- 测试框架：Google Test
+- 编程语言：C++
+- 构建工具：CMake
 - 支持平台：Windows/Linux
-
-## 贡献者
-
-- 词法分析模块开发
-- 语法分析模块开发
-- 文档和测试
-
-## 参考资料
-
-1. 《编译原理》(龙书)
-2. C--语言规范文档

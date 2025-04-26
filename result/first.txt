@@ -1,0 +1,86 @@
+addExp
+ -- '!' '(' '+' '-' 'INT' 'Ident' 
+addExpAtom
+ -- '$' '+' '-' 
+argConst
+ -- '$' ',' 
+argExp
+ -- '!' '$' '(' '+' '-' 'INT' 'Ident' 
+argFunctionF
+ -- '$' ',' 
+argFunctionR
+ -- '$' ',' 
+argVarDecl
+ -- '$' ',' 
+argVarDef
+ -- '$' '=' 
+assignExp
+ -- '!' '(' '+' '-' 'INT' 'Ident' 
+assignExpAtom
+ -- '$' '=' 
+bType
+ -- 'int' 
+block
+ -- '{' 
+blockItem
+ -- '!' '$' '(' '+' '-' ';' 'INT' 'Ident' 'const' 'int' 'return' '{' 
+callFunc
+ -- '$' '(' 
+compUnit
+ -- '$' 'const' 'int' 'void' 
+constDecl
+ -- 'const' 
+constDef
+ -- 'Ident' 
+constExp
+ -- '!' '(' '+' '-' 'INT' 'Ident' 
+constInitVal
+ -- '!' '(' '+' '-' 'INT' 'Ident' 
+decl
+ -- 'const' 'int' 
+eqExp
+ -- '!' '(' '+' '-' 'INT' 'Ident' 
+eqExpAtom
+ -- '!=' '$' '==' 
+exp
+ -- '!' '(' '+' '-' 'INT' 'Ident' 
+funcDef
+ -- 'void' 
+funcFParam
+ -- 'int' 
+funcFParams
+ -- '$' 'int' 
+funcRParam
+ -- '!' '(' '+' '-' 'INT' 'Ident' 
+funcRParams
+ -- '!' '$' '(' '+' '-' 'INT' 'Ident' 
+funcType
+ -- 'void' 
+initVal
+ -- '!' '(' '+' '-' 'INT' 'Ident' 
+lVal
+ -- 
+mulExp
+ -- '!' '(' '+' '-' 'INT' 'Ident' 
+mulExpAtom
+ -- '$' '%' '*' '/' 
+number
+ -- 'INT' 
+primaryExp
+ -- '(' 'INT' 
+program
+ -- '$' 'const' 'int' 'void' 
+relExp
+ -- '!' '(' '+' '-' 'INT' 'Ident' 
+relExpAtom
+ -- '$' '<' '<=' '>' '>=' 
+stmt
+ -- '!' '(' '+' '-' ';' 'INT' 'Ident' 'return' '{' 
+unaryExp
+ -- '!' '(' '+' '-' 'INT' 'Ident' 
+unaryOp
+ -- '!' '+' '-' 
+varDecl
+ -- 'int' 
+varDef
+ -- 'Ident' 
