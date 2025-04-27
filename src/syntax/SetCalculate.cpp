@@ -1,5 +1,8 @@
 #include "syntax/SetCalculate.h"
 
+#include <fstream>
+#include <iostream>
+
 void calculateFIRST(vector<Production> productions,
                     unordered_set<string> &terminal_symbols,
                     unordered_map<string, unordered_set<string>> &FIRST) {
@@ -55,6 +58,22 @@ void calculateFIRST(vector<Production> productions,
                 }
             }
         }
+    }
+
+    // 将计算出的FIRST集输出到文件
+    std::ofstream first_file("../data/first.txt");
+    if (first_file.is_open()) {
+        for (const auto &item : FIRST) {
+            first_file << item.first << ": ";
+            for (const auto &symbol : item.second) {
+                first_file << symbol << " ";
+            }
+            first_file << std::endl;
+        }
+        first_file.close();
+        std::cout << "FIRST集已成功输出到 ../data/first.txt" << std::endl;
+    } else {
+        std::cerr << "无法打开FIRST集输出文件" << std::endl;
     }
 }
 
@@ -112,5 +131,21 @@ void calculateFOLLOW(const vector<Production> productions,
                 }
             }
         }
+    }
+
+    // 将计算出的FOLLOW集输出到文件
+    std::ofstream follow_file("../data/follow.txt");
+    if (follow_file.is_open()) {
+        for (const auto &item : FOLLOW) {
+            follow_file << item.first << ": ";
+            for (const auto &symbol : item.second) {
+                follow_file << symbol << " ";
+            }
+            follow_file << std::endl;
+        }
+        follow_file.close();
+        std::cout << "FOLLOW集已成功输出到 ../data/follow.txt" << std::endl;
+    } else {
+        std::cerr << "无法打开FOLLOW集输出文件" << std::endl;
     }
 }
