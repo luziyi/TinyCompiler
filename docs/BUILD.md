@@ -1,47 +1,48 @@
-# 编译构建流程
+# 构建说明
 
-本项目使用 CMake 构建系统，支持多种编译器和操作系统。以下是在不同环境下的详细构建步骤。
+本文档提供 TinyCompiler 项目的详细构建指南，适用于不同操作系统和编译环境。
 
-## Windows 环境
+## 环境要求
+
+- **C++编译器**：支持 C++11 标准
+  - Windows: MinGW-GCC、MSVC
+  - Linux: GCC/G++
+  - macOS: Clang
+- **CMake**: 3.10 或更高版本
+- **操作系统**: Windows、Linux 或 macOS
+
+## Windows 环境构建
 
 ### 使用 MinGW-GCC
 
 1. **安装必要工具**
 
-   - 安装 [MinGW](https://sourceforge.net/projects/mingw-w64/files/) (推荐 MinGW-W64)
-   - 安装 [CMake](https://cmake.org/download/) (3.10 或更高版本)
-   - 确保将 MinGW 的 bin 目录添加到系统 PATH 环境变量中
+   - [MinGW-W64](https://sourceforge.net/projects/mingw-w64/): 提供 GCC 编译器
+   - [CMake](https://cmake.org/download/): 构建系统
 
-2. **构建步骤**
+2. **命令行构建**
 
    ```bash
    # 创建并进入构建目录
    mkdir build
    cd build
 
-   # 配置项目 (使用MinGW Makefiles生成器)
+   # 配置项目
    cmake -G "MinGW Makefiles" ..
 
    # 编译项目
    mingw32-make
-   ```
-
-3. **运行编译器**
-
-   ```bash
-   # 返回到项目根目录
-   cd ..
 
    # 运行编译器
-   ./compiler.exe [ps源文件路径]
+   ../bin/tiny-compiler.exe [源文件路径] [语法文件路径]
    ```
 
-### 使用 Microsoft Visual C++ (MSVC)
+### 使用 Visual Studio
 
 1. **安装必要工具**
 
-   - 安装 [Visual Studio](https://visualstudio.microsoft.com/) (包含 C++开发工具)
-   - 安装 [CMake](https://cmake.org/download/) (3.10 或更高版本)
+   - [Visual Studio](https://visualstudio.microsoft.com/)：包含 C++开发组件
+   - [CMake](https://cmake.org/download/)：可以使用 Visual Studio 内置的 CMake
 
 2. **使用命令行构建**
 
@@ -50,53 +51,34 @@
    mkdir build
    cd build
 
-   # 配置项目 (使用VS生成器，-A指定平台)
-   cmake -G "Visual Studio 16 2019" -A x64 ..
+   # 配置项目 (根据您的VS版本调整生成器)
+   cmake -G "Visual Studio 17 2022" -A x64 ..
 
    # 编译项目
    cmake --build . --config Release
+
+   # 运行编译器
+   ../bin/tiny-compiler.exe [源文件路径] [语法文件路径]
    ```
 
 3. **使用 Visual Studio IDE**
+   - 打开 Visual Studio
+   - 选择"打开本地文件夹"并选择 TinyCompiler 根目录
+   - Visual Studio 会自动检测 CMake 配置
+   - 使用 IDE 顶部的下拉菜单选择构建配置和目标
+   - 点击"构建"按钮编译项目
 
-   ```bash
-   # 创建并进入构建目录
-   mkdir build
-   cd build
-
-   # 生成Visual Studio解决方案
-   cmake -G "Visual Studio 16 2019" -A x64 ..
-
-   # 打开解决方案文件
-   start TinyCompiler.sln
-   ```
-
-   - 在 Visual Studio 中，右键点击`compiler`项目，选择"设为启动项目"
-   - 点击"本地 Windows 调试器"按钮运行编译器
-
-4. **运行编译器**
-
-   ```bash
-   # 返回到项目根目录
-   cd ..
-
-   # 运行编译器
-   .\Release\compiler.exe [源文件路径]
-   ```
-
-## Linux 环境
-
-### 使用 GCC/G++
+## Linux 环境构建
 
 1. **安装必要工具**
 
    ```bash
-   # Debian/Ubuntu系统
-   sudo apt-get update
-   sudo apt-get install build-essential cmake
+   # Ubuntu/Debian
+   sudo apt update
+   sudo apt install build-essential cmake
 
-   # CentOS/RHEL/Fedora系统
-   sudo yum install gcc gcc-c++ cmake
+   # CentOS/RHEL/Fedora
+   sudo dnf install gcc gcc-c++ cmake
    ```
 
 2. **构建步骤**
@@ -111,19 +93,12 @@
 
    # 编译项目
    make
-   ```
-
-3. **运行编译器**
-
-   ```bash
-   # 返回到项目根目录
-   cd ..
 
    # 运行编译器
-   ./compiler [源文件路径]
+   ../bin/tiny-compiler.exe [源文件路径] [语法文件路径]
    ```
 
-## macOS 环境
+## macOS 环境构建
 
 1. **安装必要工具**
 
@@ -131,7 +106,7 @@
    # 安装Homebrew (如果尚未安装)
    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
-   # 安装CMake和编译器
+   # 安装构建工具
    brew install cmake
    ```
 
@@ -147,41 +122,44 @@
 
    # 编译项目
    make
-   ```
-
-3. **运行编译器**
-
-   ```bash
-   # 返回到项目根目录
-   cd ..
 
    # 运行编译器
-   ./compiler [源文件路径]
+   ../bin/tiny-compiler.exe [源文件路径] [语法文件路径]
    ```
 
 ## 常见问题及解决方案
 
-1. **找不到编译器**
+### 找不到 C++编译器
 
-   - 确保编译器已正确安装并添加到系统 PATH 中
-   - 使用`gcc --version`或`g++ --version`(Linux/MinGW)或`cl`(MSVC)验证编译器是否可用
+- **症状**：配置项目时出现"找不到 C++编译器"的错误
+- **解决方案**：
+  - 确保已正确安装编译器
+  - 将编译器所在目录添加到系统 PATH 环境变量中
+  - 使用`g++ --version`或`cl`命令检查编译器是否可用
 
-2. **CMake 版本过低**
+### CMake 版本过低
 
-   - 本项目要求 CMake 3.10 或更高版本
-   - 使用`cmake --version`检查当前版本
-   - 需要时从官方网站下载更新版本
+- **症状**：运行 cmake 命令时出现版本错误
+- **解决方案**：
+  - 检查当前 CMake 版本：`cmake --version`
+  - 从[CMake 官网](https://cmake.org/download/)下载更新版本
+  - 安装后确保新版本在 PATH 中
 
-3. **找不到目标文件**
+### 构建失败
 
-   - Windows 下可能需要指定构建类型路径，如`.\Debug\compiler.exe`或`.\Release\compiler.exe`
-   - 确保在正确的目录中运行命令
+- **症状**：编译时出现错误
+- **解决方案**：
+  - 清理构建目录后重新构建：删除 build 目录并重新创建
+  - 检查编译器错误信息，修复相关代码问题
+  - 确保所有依赖库都已正确安装
 
-4. **库链接错误**
+### 运行时找不到输入文件
 
-   - 确保所有依赖库都已正确构建
-   - 检查 CMakeLists.txt 中的库路径是否正确
+- **症状**：运行编译器时找不到默认源文件或语法文件
+- **解决方案**：
+  - 检查 tiny-compiler 和 data 相对路径是否正确
+  - 确保 data 目录结构完整，包含所需的测试文件和语法规则
+  - 使用绝对路径或正确的相对路径指定输入文件
+  - 手动创建缺失的文件目录
 
-5. **无法创建 result 目录**
-   - 程序会尝试自动创建 result 目录
-   - 如果遇到权限问题，请手动创建该目录
+注意：在 Linux/macOS 上可能需要 sudo 权限。

@@ -2,79 +2,108 @@
 
 一个用 C++实现的 C 语言子集(C--)编译器项目，包含词法分析器和语法分析器组件。
 
-## 目录结构
+## 特性
+
+- **词法分析**：基于有限状态机(FSM)实现，支持标识符、关键字、运算符和常量的识别
+- **语法分析**：基于 LR 分析方法，包含 FIRST 集、FOLLOW 集计算和语法分析表的构建
+- **错误检测**：能够检测并报告词法和语法错误
+- **符号表管理**：实现了符号表的建立和查询功能
+
+## 详细目录结构
 
 ```
 TinyCompiler/
-├── lex/                  # 词法分析器模块
-│   ├── include/          # 词法分析器头文件
-│   │   ├── FSM.h         # 有限状态机
-│   │   ├── SymbolTable.h # 符号表
-│   │   ├── TokenCodes.h  # 词法单元类型定义
-│   │   └── util.h        # 实用工具函数
-│   └── src/              # 词法分析器源文件
-│       ├── FSM.cpp       # 有限状态机实现
-│       ├── lexical.cpp   # 词法分析主要实现
-│       ├── SymbolTable.cpp # 符号表实现
-│       └── util.cpp      # 工具函数实现
-├── syntax/               # 语法分析器模块
-│   ├── include/          # 语法分析器头文件
-│   │   ├── first_follow.h # First和Follow集合
-│   │   ├── grammar.h     # 语法规则
-│   │   ├── parser.h      # 语法解析器
-│   │   ├── parser_table.h # 预测分析表
-│   │   └── syntax.h      # 语法分析主接口
-│   └── src/              # 语法分析器源文件
-│       ├── first_follow.cpp # First和Follow集合实现
-│       ├── grammar.cpp   # 语法规则实现
-│       ├── parser.cpp    # 语法解析器实现
-│       ├── parser_table.cpp # 预测分析表实现
-│       └── syntax.cpp    # 语法分析主接口实现
-├── data/                 # 测试和语法规则数据
-│   ├── grammer.txt       # 语法规则定义文件
-│   └── test.sy           # 测试源代码文件
-├── result/               # 分析结果输出目录
-│   ├── first.txt         # First集合输出
-│   ├── follow.txt        # Follow集合输出
-│   ├── lexical.txt       # 词法分析结果
-│   ├── symbolTable.txt   # 符号表输出
-│   ├── syntax_analysis.txt # 语法分析结果
-│   └── table.txt         # 预测分析表输出
-├── lib/                  # 生成的库文件
-├── build/                # 构建目录（编译生成）
-├── main.cpp              # 主程序入口
-├── CMakeLists.txt        # 主编译配置
-└── README.md             # 本文件
+├── include/                     # 头文件目录
+│   ├── lexical/                 # 词法分析器头文件
+│   │   ├── FSM.h                # 有限状态机定义
+│   │   ├── SymbolTable.h        # 符号表定义
+│   │   ├── TokenCodes.h         # 词法单元类型定义
+│   │   └── util.h               # 辅助函数
+│   └── syntax/                  # 语法分析器头文件
+│       ├── analysis.h           # 语法分析接口
+│       ├── define.h             # 基本数据结构定义
+│       ├── grammar.h            # 语法规则处理
+│       ├── LRItemSet.h          # LR项目集定义
+│       ├── LRTable.h            # LR分析表定义
+│       └── SetCalculate.h       # First/Follow集计算
+│
+├── src/                         # 源代码目录
+│   ├── CMakeLists.txt           # 主源码CMake配置
+│   ├── main.cpp                 # 主程序入口
+│   ├── lexical/                 # 词法分析相关源文件
+│   │   ├── CMakeLists.txt       # 词法分析器CMake配置
+│   │   ├── FSM.cpp              # 有限状态机实现
+│   │   ├── lexical.cpp          # 词法分析主要实现
+│   │   ├── SymbolTable.cpp      # 符号表实现
+│   │   └── util.cpp             # 辅助函数实现
+│   └── syntax/                  # 语法分析相关源文件
+│       ├── CMakeLists.txt       # 语法分析器CMake配置
+│       ├── analysis.cpp         # 语法分析实现
+│       ├── grammar.cpp          # 语法规则处理实现
+│       ├── LRItemSet.cpp        # LR项目集实现
+│       ├── LRTable.cpp          # LR分析表实现
+│       └── SetCalculate.cpp     # First/Follow集计算实现
+│
+├── data/                        # 测试数据和语法规则
+│   ├── first.txt                # FIRST集输出结果
+│   ├── follow.txt               # FOLLOW集输出结果
+│   ├── grammar.txt              # 语法规则定义文件
+│   ├── lexical.txt              # 词法分析结果
+│   ├── symbolTable.txt          # 符号表输出
+│   ├── syntax.txt               # 语法分析结果
+│   └── testsample/              # 测试用例目录
+│       ├── test.sy              # 默认测试文件
+│       ├── test-1.sy            # 测试文件1
+│       ├── test-2.sy            # 测试文件2
+│       ├── test-3.sy            # 测试文件3
+│
+├── build/                       # 构建目录(自动生成)
+│   ├── bin/                     # 可执行文件输出目录
+│   │   └── tiny-compiler.exe    # 编译器可执行文件
+│   ├── src/                     # 构建生成的中间文件
+│   │   ├── lexical/             # 词法分析器构建结果
+│   │   │   └── liblexical_lib.a # 词法分析静态库
+│   │   └── syntax/              # 语法分析器构建结果
+│   │       └── libsyntax_lib.a  # 语法分析静态库
+│   ├── CMakeCache.txt           # CMake缓存文件
+│   └── ...                      # 其他构建文件
+│
+├── docs/                        # 文档目录
+│   ├── BUILD.md                 # 构建说明文档
+│   └── 2025春季编译原理大作业.pdf # 作业要求文档
+│
+├── examples/                    # 示例代码目录
+├── CMakeLists.txt               # 主CMake配置文件
+├── LICENSE.md                   # 许可证文件
+└── README.md                    # 本文件
 ```
 
-## 功能特性
+## 运行方式
 
-1. 词法分析
+编译器支持以下几种运行方式：
 
-   - 支持 C--语言的基本词法单元识别
-   - 实现了有限状态机和符号表
-   - 支持错误检测和报告
+```bash
+# 1. 使用默认源文件和语法文件
+./tiny-compiler
 
-2. 语法分析
-   - 实现 LL(1)文法分析
-   - 支持 First 集合和 Follow 集合计算
-   - 生成预测分析表
-   - 执行语法分析并输出分析过程
+# 3. 同时指定源文件和语法文件
+./tiny-compiler [源文件路径] [语法文件路径]
+```
 
-## 编译方式
+默认文件路径：
 
-本项目使用 CMake 构建系统。按照以下步骤编译项目：
+- 源文件：`../data/testsample/test.sy`
+- 语法文件：`../data/grammar.txt`
 
-### 前置条件
+## 编译构建
 
-- C++17 兼容的编译器
-- CMake (版本 >= 3.10)
+本项目使用 CMake 构建系统。请参考[构建说明](docs/BUILD.md)获取详细的构建步骤。
 
-### 编译步骤
+### 快速构建（Windows 环境）
 
 ```bash
 # 创建并进入构建目录
-mkdir -p build
+mkdir build
 cd build
 
 # 配置项目
@@ -82,60 +111,44 @@ cmake ..
 
 # 编译项目
 cmake --build .
-# 或者直接使用
-make
+
+# 运行程序
+cd bin
+./tiny-compiler
 ```
 
-**详细的构建指南**请查看[编译构建流程](docs/BUILD.md)文档，其中包含了在 Windows、Linux 和 macOS 等不同环境下，使用不同编译器(MSVC、MinGW、GCC/G++)的详细构建步骤。
-
-### 运行编译器
-
-```bash
-# 编译完成后，在项目根目录运行
-./compiler [源文件路径]
-
-# 如果不指定源文件路径，默认使用 data/test.sy
-```
-
-## 分析流程
+## 编译流程
 
 编译器执行以下步骤：
 
-1. 读取源代码文件
-2. 执行词法分析，生成词法单元序列
-3. 读取语法规则文件 (data/grammer.txt)
-4. 构建 First 集合和 Follow 集合
-5. 生成预测分析表
-6. 执行语法分析
-7. 输出分析结果到 result 目录
+1. **词法分析**
 
-## 实现细节
+   - 读取源代码文件
+   - 构造有限状态机进行词法单元识别
+   - 生成词法单元序列和符号表
+   - 输出结果到`data/lexical.txt`和`data/symbolTable.txt`
 
-### 词法分析器
+2. **语法分析**
+   - 读取语法规则文件(`data/grammar.txt`)
+   - 构建终结符和非终结符集合
+   - 计算 FIRST 集和 FOLLOW 集
+   - 生成项目集规范族
+   - 构建语法分析表
+   - 执行语法分析
+   - 输出结果到`data/syntax.txt`、`data/first.txt`和`data/follow.txt`
 
-词法分析器使用确定有限状态机(DFA)识别词法单元：
+## 支持的语言特性
 
-- 标识符和关键字
-- 数字常量
-- 运算符 (+, -, \*, /, %, =, >, <, ==, <=, >=, !=, &&, ||)
-- 界符 ((, ), {, }, ;, ,)
+C--语言支持以下特性：
 
-所有识别的词法单元会输出到 result/lexical.txt 文件中。
+- **数据类型**：int, float, void
+- **控制结构**：if-else 语句
+- **函数**：函数定义和调用
+- **变量**：变量声明和赋值
+- **运算符**：算术运算符、比较运算符和逻辑运算符
 
-### 语法分析器
+## 开发信息
 
-语法分析器实现了 LL(1)预测分析方法：
-
-1. 从语法规则文件读取文法
-2. 构建非终结符和终结符集合
-3. 计算 First 集合和 Follow 集合
-4. 构建预测分析表
-5. 使用分析表执行自顶向下的语法分析
-
-分析结果输出到 result/syntax_analysis.txt 文件中。
-
-## 开发环境
-
-- 编程语言：C++
-- 构建工具：CMake
-- 支持平台：Windows/Linux
+- **编程语言**：C++ 11
+- **构建工具**：CMake 3.10+
+- **支持平台**：Windows, Linux, macOS
