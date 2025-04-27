@@ -27,18 +27,16 @@ varDef -> Ident = initVal
 initVal -> exp
 
 funcDef -> funcType Ident ( funcFParams ) block
+funcDef -> bType Ident ( funcFParams ) block
 funcDef -> int main ( funcFParams ) block
 funcDef -> void main ( funcFParams ) block
-
+funcType -> void
 
 funcFParams -> funcFParam argFunctionF
 funcFParams -> $
 
 argFunctionF -> , funcFParam argFunctionF
 argFunctionF -> $
-
-funcType -> void
-funcType -> int
 
 funcFParam -> bType Ident
 
@@ -48,20 +46,26 @@ blockItem -> stmt blockItem
 blockItem -> $
 
 stmt -> lVal = exp ;
-
 stmt -> block
-
 stmt -> argExp ;
-
-stmt -> if ( cond ) stmt else stmt
-stmt -> if ( cond ) stmt
-
+stmt -> matched_stmt
+stmt -> open_stmt
 stmt -> return argExp ;
+
+matched_stmt -> if ( cond ) matched_stmt else matched_stmt
+matched_stmt -> lVal = exp ;
+matched_stmt -> block
+matched_stmt -> argExp ;
+matched_stmt -> return argExp ;
+
+open_stmt -> if ( cond ) stmt
+open_stmt -> if ( cond ) matched_stmt else open_stmt
 
 argExp -> $
 argExp -> exp
 
 exp -> addExp
+exp -> cond
 
 cond -> lOrExp
 
@@ -88,7 +92,6 @@ argFunctionR -> , funcRParam argFunctionR
 argFunctionR -> $
 
 unaryExp -> unaryOp unaryExp
-
 
 unaryOp -> +
 unaryOp -> -
