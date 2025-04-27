@@ -1,5 +1,0 @@
-name	value
-func	0x192bab1d8d0
-c	0x192bab1e110
-b	0x192bab1dd20
-a	0x192bab1dd80
