@@ -1,12 +1,16 @@
+constExp: ; , 
 lAndExpAtom: || ) 
 relExp: ) || && == != 
 addExp: || && != == < ) > >= <= , ; 
 mulExpAtom: || && != ) > >= - == < + <= , ; 
 mulExp: || && != >= > ) ; <= , == < + - 
-unaryExp: || && == / % + ; * < , <= - >= > ) != 
-number: || && == / % + ; * < , <= - >= > ) != 
+argFunctionR: ) 
+relExpAtom: ) || && != == 
+unaryOp: Ident ( ! IntConst floatConst - + 
+funcRParam: ) , 
 eqExpAtom: ) || && 
 initVal: , ; 
+number: || && == / % + ; * < , <= - >= > ) != 
 varDef: ; , 
 varDecl: return ( if { # Ident int float void const ; } - floatConst IntConst ! + 
 block: else floatConst IntConst return ( Ident int float void const ; } - ! + if # { 
@@ -14,32 +18,28 @@ argVarDecl: ;
 constInitVal: , ; 
 lOrExp: ) 
 argConst: ; 
-relExpAtom: ) || && != == 
-unaryOp: Ident ( ! IntConst floatConst - + 
-funcRParam: ) , 
 lOrExpAtom: ) 
 blockItem: } 
-decl: } - floatConst IntConst ; float const void int Ident ! + if # { ( return 
-constExp: ; , 
+decl: } - floatConst IntConst ; float int const void Ident ! + if # { ( return 
+unaryExp: || && == / % + ; * < , <= - >= > ) != 
 argFunctionF: ) 
 constDecl: return ( if { # Ident int float void const ; } - floatConst IntConst ! + 
-argFunctionR: ) 
 constDef: ; , 
 compUnit: # 
 eqExp: ) || && 
 funcFParam: ) , 
 bType: Ident 
-callFunc: || && != % + == / - * < , <= ; ) > >= 
-funcType: Ident 
-program: # 
 lAndExp: ) || 
 funcFParams: ) 
 addExpAtom: || && != >= > ) == < ; <= , 
 stmt: else } - ! + float int const ; if { Ident ( return IntConst floatConst 
-funcRParams: ) 
-lVal: || && == != / % + ; * < , <= = - >= > ) 
-funcDef: # int void float const 
+funcDef: # void int float const 
 argExp: ; 
 exp: ) ; , 
 cond: ) 
+lVal: || && == != / % + ; * < , <= = - >= > ) 
+funcRParams: ) 
 primaryExp: || && != % + == / - * < , <= ; ) > >= 
+funcType: Ident 
+program: # 
+callFunc: || && != % + == / - * < , <= ; ) > >= 
