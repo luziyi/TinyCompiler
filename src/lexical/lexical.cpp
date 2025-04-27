@@ -11,7 +11,8 @@ using namespace std;
 
 set<string> keyword = {"int",  "void",  "return", "const",
                        "main", "float", "if",     "else"};  // 关键字
-set<char> operation = {'+', '-', '*', '/', '%', '=', '>', '<'};
+set<char> operation = {'+', '-', '*', '/', '%',
+                       '=', '>', '<', '!'};  // 添加感叹号作为单字符运算符
 set<char> operationBeginChar = {'=', '<', '>', '!', '&', '|'};
 set<string> operationOf2Char = {"==", "<=", ">=", "!=", "&&", "||"};
 set<char> boundary = {'(', ')', '{', '}', ';', ','};  // 界符
@@ -28,6 +29,7 @@ map<std::string, int> tokenCodeMap = {
     {"==", TokenCode::OP_equal},      {"<=", TokenCode::OP_leq},
     {">=", TokenCode::OP_geq},        {"!=", TokenCode::OP_neq},
     {"&&", TokenCode::OP_and},        {"||", TokenCode::OP_or},
+    {"!", TokenCode::OP_not},  // 添加感叹号的映射
     {"(", TokenCode::SE_lparent},     {")", TokenCode::SE_rparent},
     {"{", TokenCode::SE_lbraces},     {"}", TokenCode::SE_rbarces},
     {";", TokenCode::SE_semicolon},   {",", TokenCode::SE_comma}};

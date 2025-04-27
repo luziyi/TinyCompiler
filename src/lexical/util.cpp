@@ -50,6 +50,7 @@ void printToken(string token, int code, int lineNum) {
         case TokenCode::OP_neq:
         case TokenCode::OP_and:
         case TokenCode::OP_or:
+        case TokenCode::OP_not:  // 添加对感叹号(!)的处理
             result += "OP";
             break;
 

@@ -1,17 +1,99 @@
-int a = 3;
-int b = 1;
-int c = 3;
-int e = 0, f = 10;
+const int MAX = 100;
+const float PI = 3.14159;
 
-
-int main(){
-    int a = 5;
-    int c = 2;
-    int temp1 = f + e;
-    int temp2 = f + 2;
-    int temp3 = c;
-    if (temp1 > temp2) {
-        a = 1;
-    }
+int add(int a, int b) {
     return a + b;
+}
+
+float multiply(float x, float y) {
+    return x * y;
+}
+
+int max(int a, int b) {
+    if (a > b) {
+        return a;
+    } else {
+        return b;
+    }
+}
+
+int complex_function(int a, int b, int c) {
+    int result;
+    
+    if (a > b) {
+        if (a > c) {
+            result = a;
+        } else {
+            result = c;
+        }
+    } else {
+        if (b > c) {
+            result = b;
+        } else {
+            result = c;
+        }
+    }
+    
+    return result;
+}
+
+int test_operators(int a, int b) {
+    int result = 0;
+    
+    result = a + b;
+    result = a - b;
+    result = a * b;
+    result = a / b;
+    result = a % b;
+    
+    result = -a;
+    
+    if (a > b && a != 0) {
+        result = a;
+    }
+    
+    if (a < b || b == 0) {
+        result = b;
+    }
+    
+    if (!(a <= b) && !(b >= a)) {
+        result = a + b;
+    }
+    
+    return result;
+}
+
+int main() {
+    int a;
+    int b = 20;
+    float c = 3.14;
+    
+    a = 10;
+    
+    int sum = add(a, b);
+    float product = multiply(c, 2.0);
+    
+    int complex_result = (a + b) * (a - b) / (a * b) + (a % b);
+    
+    if (a < b) {
+        int temp = a;
+        a = b;
+        b = temp;
+    }
+    
+    if (a > 0) {
+        if (b > 0) {
+            sum = sum + 1;
+        } else {
+            sum = sum - 1;
+        }
+    } else {
+        sum = 0;
+    }
+    
+    int max_value = max(a, b);
+    int complex_value = complex_function(a, b, sum);
+    int op_result = test_operators(a, b);
+    
+    return 0;
 }

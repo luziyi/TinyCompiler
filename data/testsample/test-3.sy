@@ -1,0 +1,24 @@
+int main(){
+    int a = 10;
+    int b = 20;
+    int c = nihao(a,b);
+    if (a > b){
+        c = a;
+    }else{
+        c = b;
+    }
+
+    if (a > b){
+        c = a;
+    }else if (a == b){
+        c = a + b;
+    }else{
+        c = b;
+    }
+
+    if (a > b){
+        c = a;
+    }
+    
+    return c;
+}

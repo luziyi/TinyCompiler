@@ -29,6 +29,7 @@ enum TokenCode {
     OP_neq,       // !=
     OP_and,       // &&
     OP_or,        // ||
+    OP_not,       // !  添加逻辑非运算符
 
     /*SE 界符*/
     SE_lparent,    // (
