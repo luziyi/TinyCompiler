@@ -35,6 +35,8 @@ void printToken(std::string token, int code, int lineNum) {
         case TokenCode::KW_RETURN:
         case TokenCode::KW_CONST:
         case TokenCode::KW_MAIN:
+        case TokenCode::KW_IF:     // 添加if关键字
+        case TokenCode::KW_ELSE:   // 添加else关键字
             result += "KW";
             break;
         case TokenCode::OP_PLUS:

@@ -11,6 +11,8 @@ enum TokenCode {
     KW_RETURN,  // return
     KW_CONST,   // const
     KW_MAIN,    // main
+    KW_IF,      // if
+    KW_ELSE,    // else
 
     /*OP 运算符*/
     OP_PLUS,      // +

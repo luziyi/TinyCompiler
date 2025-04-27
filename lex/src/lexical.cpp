@@ -1,7 +1,7 @@
 #include "../include/lexical.h"
 
-std::set<std::string> keyword = {"int",    "float", "void",
-                                 "return", "const", "main"};
+std::set<std::string> keyword = {"int",   "float", "void", "return",
+                                 "const", "main",  "if",   "else"};
 std::set<char> boundary = {'(', ')', '{', '}', ';', ','};
 std::set<char> operation = {'+', '-', '*', '/', '%', '=', '>', '<'};
 std::set<char> operationBeginChar = {'=', '<', '>', '!', '&', '|'};
@@ -10,6 +10,7 @@ std::map<std::string, int> tokenCodeMap = {
     {"int", TokenCode::KW_INT},     {"void", TokenCode::KW_VOID},
     {"float", TokenCode::KW_FLOAT}, {"return", TokenCode::KW_RETURN},
     {"const", TokenCode::KW_CONST}, {"main", TokenCode::KW_MAIN},
+    {"if", TokenCode::KW_IF},       {"else", TokenCode::KW_ELSE},
     {"+", TokenCode::OP_PLUS},      {"-", TokenCode::OP_MINUS},
     {"*", TokenCode::OP_MULTIPLY},  {"/", TokenCode::OP_DIVIDE},
     {"%", TokenCode::OP_PERCENT},   {"=", TokenCode::OP_ASSIGN},
