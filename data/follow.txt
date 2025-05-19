@@ -1,45 +1,47 @@
 constExp: ; , 
-lAndExpAtom: || ) 
-relExp: ) || && == != 
+lAndExpAtom: || ) ; , 
+relExp: , ; ) || && == != 
 addExp: || && != == < ) > >= <= , ; 
 mulExpAtom: || && != ) > >= - == < + <= , ; 
 mulExp: || && != >= > ) ; <= , == < + - 
 argFunctionR: ) 
-relExpAtom: ) || && != == 
+relExpAtom: ) ; , || && != == 
 unaryOp: Ident ( ! IntConst floatConst - + 
 funcRParam: ) , 
-eqExpAtom: ) || && 
+funcRParams: ) 
+eqExpAtom: , ; ) || && 
 initVal: , ; 
 number: || && == / % + ; * < , <= - >= > ) != 
 varDef: ; , 
 varDecl: return ( if { # Ident int float void const ; } - floatConst IntConst ! + 
-block: else floatConst IntConst return ( Ident int float void const ; } - ! + if # { 
+block: else floatConst IntConst return ( Ident int float void const ; } - ! + # { if 
 argVarDecl: ; 
 constInitVal: , ; 
-lOrExp: ) 
+lOrExp: ) ; , 
 argConst: ; 
-lOrExpAtom: ) 
+lOrExpAtom: , ; ) 
 blockItem: } 
-decl: } - floatConst IntConst ; float int const void Ident ! + if # { ( return 
+decl: } - floatConst IntConst ; float int const void Ident ! + # { if ( return 
 unaryExp: || && == / % + ; * < , <= - >= > ) != 
 argFunctionF: ) 
 constDecl: return ( if { # Ident int float void const ; } - floatConst IntConst ! + 
 constDef: ; , 
 compUnit: # 
-eqExp: ) || && 
+eqExp: ) ; , || && 
 funcFParam: ) , 
 bType: Ident 
-lAndExp: ) || 
+callFunc: || && != % + == / - * < , <= ; ) > >= 
+funcType: Ident 
+program: # 
+lAndExp: , ; ) || 
 funcFParams: ) 
 addExpAtom: || && != >= > ) == < ; <= , 
-stmt: else } - ! + float int const ; if { Ident ( return IntConst floatConst 
+stmt: } - ! + float int const ; { if Ident ( return IntConst floatConst 
+matched_stmt: else floatConst IntConst } - ! + float int const ; { if Ident ( return 
+open_stmt: floatConst IntConst } - ! + float int const ; { if Ident ( return 
+primaryExp: || && != % + == / - * < , <= ; ) > >= 
 funcDef: # void int float const 
 argExp: ; 
 exp: ) ; , 
-cond: ) 
+cond: , ; ) 
 lVal: || && == != / % + ; * < , <= = - >= > ) 
-funcRParams: ) 
-primaryExp: || && != % + == / - * < , <= ; ) > >= 
-funcType: Ident 
-program: # 
-callFunc: || && != % + == / - * < , <= ; ) > >= 

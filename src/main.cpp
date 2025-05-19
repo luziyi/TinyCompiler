@@ -63,6 +63,16 @@ void compileProcess(const string& sourceFileName,
     actiontable = fillActionTable(productions, actiontable, states, FOLLOW,
                                   nonterminals, terminals);
 
+    // 保存表格到文件
+    TableUtils::saveGotoTableCSV(gototable, nonterminals,
+                                 "../data/goto_table.csv");
+    TableUtils::saveActionTableCSV(actiontable, terminals,
+                                   "../data/action_table.csv");
+
+    // 打印表格到控制台
+    TableUtils::printGotoTable(gototable, nonterminals);
+    TableUtils::printActionTable(actiontable, terminals);
+
     // 执行语法分析
     stack<string> symbol_stack;
     stack<int> states_stack;

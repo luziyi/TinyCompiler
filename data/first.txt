@@ -8,6 +8,7 @@ argFunctionR: $ ,
 relExpAtom: $ >= <= > < 
 unaryOp: ! - + 
 funcRParam: + - floatConst IntConst ! ( Ident 
+funcRParams: IntConst floatConst - + Ident ! ( $ 
 eqExpAtom: $ != == 
 initVal: + - floatConst IntConst ! ( Ident 
 number: floatConst IntConst 
@@ -19,7 +20,7 @@ constInitVal: + - floatConst IntConst ! ( Ident
 lOrExp: + - floatConst IntConst ! ( Ident 
 argConst: $ , 
 lOrExpAtom: $ || 
-blockItem: ! + $ float int const ; if { Ident return ( IntConst floatConst - 
+blockItem: ! + $ float int const ; { if Ident return ( IntConst floatConst - 
 decl: float int const 
 unaryExp: + - floatConst IntConst ! ( Ident 
 argFunctionF: $ , 
@@ -29,17 +30,18 @@ compUnit: const float int void $
 eqExp: + - floatConst IntConst ! ( Ident 
 funcFParam: int float 
 bType: float int 
+callFunc: ( 
+funcType: void 
+program: const void int float $ 
 lAndExp: IntConst floatConst - + Ident ! ( 
 funcFParams: float int $ 
 addExpAtom: $ - + 
 stmt: IntConst floatConst - + ! ( ; Ident return if { 
-funcDef: void int 
+matched_stmt: IntConst floatConst - + ! ( ; Ident return { if 
+open_stmt: if 
+primaryExp: IntConst floatConst Ident ( 
+funcDef: void int float 
 argExp: + - floatConst IntConst ! ( Ident $ 
 exp: IntConst floatConst - + Ident ! ( 
 cond: IntConst floatConst - + Ident ! ( 
 lVal: Ident 
-funcRParams: IntConst floatConst - + Ident ! ( $ 
-primaryExp: IntConst floatConst Ident ( 
-funcType: int void 
-program: float const void int $ 
-callFunc: ( 
