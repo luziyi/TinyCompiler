@@ -26,7 +26,6 @@ TinyCompiler/
 │       ├── LRItemSet.h          # LR项目集定义
 │       ├── LRTable.h            # LR分析表定义
 │       └── SetCalculate.h       # First/Follow集计算
-│
 ├── src/                         # 源代码目录
 │   ├── CMakeLists.txt           # 主源码CMake配置
 │   ├── main.cpp                 # 主程序入口
@@ -50,12 +49,14 @@ TinyCompiler/
 │   ├── grammar.txt              # 语法规则定义文件
 │   ├── lexical.txt              # 词法分析结果
 │   ├── symbolTable.txt          # 符号表输出
+│   ├── action_table.csv         # LR分析表的 ACTION 部分
+│   ├── goto_table.csv           # LR分析表的 GOTO 部分
 │   ├── syntax.txt               # 语法分析结果
 │   └── testsample/              # 测试用例目录
 │       ├── test.sy              # 默认测试文件
 │       ├── test-1.sy            # 测试文件1
 │       ├── test-2.sy            # 测试文件2
-│       ├── test-3.sy            # 测试文件3
+│       └── test-3.sy            # 测试文件3
 │
 ├── build/                       # 构建目录(自动生成)
 │   ├── bin/                     # 可执行文件输出目录
@@ -117,7 +118,7 @@ cd bin
 ./tiny-compiler
 ```
 
-## 编译流程
+## 编译器流程
 
 编译器执行以下步骤：
 
@@ -144,11 +145,22 @@ C--语言支持以下特性：
 - **数据类型**：int, float, void
 - **控制结构**：if-else 语句
 - **函数**：函数定义和调用
-- **变量**：变量声明和赋值
+- **变量**：变量声明和赋值，包含全局变量局部变量以及常量的定义
 - **运算符**：算术运算符、比较运算符和逻辑运算符
+- **主函数**：支持 void main 和 int main 主函数定义
 
 ## 开发信息
 
 - **编程语言**：C++ 11
 - **构建工具**：CMake 3.10+
 - **支持平台**：Windows, Linux, macOS
+
+## 项目人员分工
+
+| 姓名   | 学号       | 工作内容                                                             |
+| ------ | ---------- | -------------------------------------------------------------------- |
+| 武承霖 | 3022244338 | 实现 dfa 最小化，token 的定义与构建                                  |
+| 王嘉仑 | 3022244358 | nfa 与 dfa 的实现，主扫描函数的实现                                  |
+| 王鑫培 | 3022244362 | 实现 LR 项集构造与 LR 自动机，ACTION 表与 GOTO 表构建及加载          |
+| 陆子毅 | 3022206045 | 文法处理与 FIRST/FOLLOW 集，实现 LR 项集构造与 LR 自动机             |
+| 郑力墉 | 3022244344 | LR 语法分析主驱动与日志输出，ACTION 表与 GOTO 表构建及加载，撰写报告 |
