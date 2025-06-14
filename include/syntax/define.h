@@ -216,9 +216,9 @@ class TableUtils {
         if (!file.is_open()) return false;
 
         // 写入表头（终结符）
-        file << "State";
+        file << "\"State\"";
         for (const auto& term : terminals) {
-            file << "," << term;
+            file << ",\"" << term << "\"";
         }
         file << endl;
 

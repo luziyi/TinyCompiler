@@ -6,8 +6,8 @@
 vector<string> read_from_lexical();
 
 void analysis(vector<string> rest_string, vector<Production> &productions,
-              vector<State> states, stack<int> &states_stack,
-              stack<string> &symbol_stack, actionTable actiontable,
-              gotoTable gototable);
+                 vector<State> states, stack<int> &states_stack,
+                 stack<string> &symbol_stack, actionTable actiontable,
+                 gotoTable gototable);
 
 #endif

@@ -127,4 +127,11 @@ void analysis(vector<string> rest_string, vector<Production> &productions,
 
     output_file.close();
     cout << "语法分析结果已写入: ../data/syntax.txt" << endl;
+
+    if (final_action == "acc") {
+        cout << "语法分析成功！" << endl;
+    } else {
+        cout << "语法分析失败！" << endl;
+    }
+    return;
 }

@@ -35,6 +35,7 @@
 
    # 运行编译器
    ../bin/tiny-compiler.exe [源文件路径] [语法文件路径]
+   .\\bin\\tiny-compiler.exe [源文件路径] [语法文件路径]
    ```
 
 ### 使用 Visual Studio

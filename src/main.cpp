@@ -68,20 +68,16 @@ void compileProcess(const string& sourceFileName,
                                  "../data/goto_table.csv");
     TableUtils::saveActionTableCSV(actiontable, terminals,
                                    "../data/action_table.csv");
-
-    // 打印表格到控制台
-    TableUtils::printGotoTable(gototable, nonterminals);
-    TableUtils::printActionTable(actiontable, terminals);
+    cout << "ACTION分析表已保存到: " << "../data/action_table.csv" << endl;
+    cout << "GOTO分析表已保存到: " << "../data/goto_table.csv" << endl;
 
     // 执行语法分析
     stack<string> symbol_stack;
     stack<int> states_stack;
     analysis(input, productions, states, states_stack, symbol_stack,
-             actiontable, gototable);
-
-    cout << "语法分析完成！" << endl;
-
-    cout << "\n==================== 编译流程结束 ====================" << endl;
+                       actiontable, gototable);
+    cout << "=================== 词法语法分析结束 ==================="
+         << endl;
 }
 
 void printUsage(const char* programName) {
@@ -109,7 +105,7 @@ int main(int argc, char** argv) {
         grammarFileName = "../data/grammar.txt";
     } else if (argc == 2) {
         sourceFileName = argv[1];
-        grammarFileName = "../../data/grammar.txt";
+        grammarFileName = "../data/grammar.txt";
         cout << "使用指定的源文件和默认语法文件" << endl;
     } else if (argc == 3) {
         sourceFileName = argv[1];

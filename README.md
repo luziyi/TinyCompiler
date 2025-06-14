@@ -114,8 +114,7 @@ cmake ..
 cmake --build .
 
 # 运行程序
-cd bin
-./tiny-compiler
+./bin/tiny-compiler
 ```
 
 ## 编译器流程
